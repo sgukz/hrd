@@ -39,7 +39,7 @@
                       id="phone"
                       name="phone"
                       placeholder=""
-                      :required="true"
+                      
                       autofocus
                     ></b-form-input>
                   </b-form-group>
@@ -81,7 +81,7 @@
                     label-for="travel_type"
                     :horizontal="true"
                   >
-                  <v-select v-model="travel_type" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>
+                  <v-select v-model="travel_type" :required="true" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -235,13 +235,10 @@
                         </b-input-group-text>
                       </b-input-group-prepend>
                       <datepicker
-                        :disabledDates="disabledFn"
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.book_owner_date"
-                        name="book_owner_date"
-                        :required="true"
                         sm="6"
                       ></datepicker>
                     </b-input-group>
@@ -261,7 +258,7 @@
                       v-model="form.book_owner"
                       id="book_owner"
                       name="book_owner"
-                      :required="true"
+                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -281,7 +278,7 @@
                       v-model="form.meeting_story"
                       id="meeting_story"
                       name="meeting_story"
-                      :required="true"
+                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -301,7 +298,7 @@
                       v-model="form.meeting_owner"
                       id="meeting_owner"
                       name="meeting_owner"
-                      :required="true"
+                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -318,7 +315,7 @@
                       v-model="form.meeting_host"
                       id="meeting_host"
                       name="meeting_host"
-                      :required="true"
+                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -337,7 +334,7 @@
                       v-model="form.meeting_type"
                       id="meeting_type"
                       name="meeting_type"
-                      :required="true"
+                      
                     >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option
@@ -369,7 +366,7 @@
                         :language="th"
                         v-model="form.start_date"
                         name="start_date"
-                        :required="true"
+                        
                       ></datepicker> &nbsp;ถึง&nbsp;
                       <datepicker
                         :disabledDates="disabledFn"
@@ -378,7 +375,7 @@
                         :language="th"
                         v-model="form.end_date"
                         name="end_date"
-                        :required="true"
+                        
                       ></datepicker>
                       
                     </b-input-group>
@@ -401,7 +398,7 @@
                       v-model="form.meeting_place"
                       id="meeting_place"
                       name="meeting_place"
-                      :required="true"
+                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -413,7 +410,7 @@
                     label-for="meeting_place_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_place_type" :required="true">
+                    <b-form-select v-model="form.meeting_place_type" >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option :value="1">ในเขตจังหวัด</option>
                       <option :value="2">นอกเขตจังหวัด</option>
@@ -443,7 +440,7 @@
                         :language="th"
                         v-model="form.start_travel"
                         name="start_travel"
-                        :required="true"
+                        
                       ></datepicker>
                       <!-- <b-form-input type="text" v-model="form.start_travel" name="start_travel" id="start_travel" placeholder></b-form-input> -->
                     </b-input-group>
@@ -471,7 +468,7 @@
                         :language="th"
                         v-model="form.end_travel"
                         name="end_travel"
-                        :required="true"
+                        
                       ></datepicker>
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
@@ -488,7 +485,7 @@
                     label-for="strategy"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.strategy" id="strategy" name="strategy" :required="true">
+                    <b-form-select v-model="form.strategy" id="strategy" name="strategy" >
                       <option value="" disabled>เลือกประเด็นยุทธศาสตร์</option>
                       <option
                         v-for="(str,key) in meetingStrategy"
@@ -507,7 +504,7 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" :required="true">
+                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
@@ -528,7 +525,7 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" :required="true">
+                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" >
                       <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
@@ -749,8 +746,6 @@
                         type="text"
                         v-model="form.distance"
                         sm
-                        id="distance"
-                        name="distance"
                         placeholder
                       ></b-form-input>
                     </div>
@@ -1055,9 +1050,9 @@ export default {
         travel_owncar: "",
         register_owncar: "",
         expense_owncar: 0,
-        distance: "",
+        distance: 0,
         residence: "",
-        residence_num: "",
+        residence_num: 0,
         expense_residence: 0,
         register_meeting: "",
         expense_register_meeting: 0,
@@ -1073,24 +1068,18 @@ export default {
       partner_name: null,
       partner_dep: null,
       partner_travel: null,
-      person_partner: [
-        {id: 1, re_date: date_now, fullname: "", dep: "", travel: null ,recoder: ""}
-      ],
+      person_partner: [{
+        id: 1, 
+        re_date: date_now, 
+        fullname: "", 
+        dep: "", 
+        travel: null ,
+        recoder: ""
+      }],
       th: th,
       show: true,
       disabledDates: {},
       disabledFn: {
-        ranges: [
-          {
-            // Disable dates in given ranges (exclusive).
-            from: new Date(2016, 11, 25),
-            to: new Date(2016, 11, 30)
-          },
-          {
-            from: new Date(2017, 1, 12),
-            to: new Date(2017, 2, 25)
-          }
-        ],
         customPredictor(date) {
           if (date.getDate() < ToDay) {
             return true;
@@ -1103,8 +1092,7 @@ export default {
             return true;
           }
         }
-      },
-      highlighted: {}
+      }
     };
   },
   computed: {
@@ -1114,36 +1102,46 @@ export default {
   },
   methods: {
     onSubmit(evt) {
-      //alert(JSON.stringify(this.person_partner[0].id));
-      //console.log(JSON.stringify(this.travel_type.travel_name));
-      
-      this.person_partner[0].fullname = this.userLogin[0].fname+" "+this.userLogin[0].lname;
-      this.person_partner[0].dep = this.depart;
-      this.person_partner[0].travel = this.travel_type.travel_name;
-      this.person_partner[0].recoder = this.userLogin[0].idcard
-      this.form.cid_account = this.userLogin[0].idcard
-      this.form.cid_account_recoder = this.userLogin[0].idcard
-      axios
-        .post(this.HOST+"/register/add",{
-            register: this.form,
-            register_partner: this.person_partner
-        })
-        .then(res => {
-          let data = res.data
-          if(data[0].status == 200){
-            this.$swal({
-              position: 'top-end',
-              type: 'success',
-              title: 'Your work has been saved.',
-              showConfirmButton: false,
-              timer: 1500
-            })
-            this.$router.push('/services/register-all');
-          }
-        }) 
-        .catch(error => console.log("Error :", error));
+      if(this.travel_type == null){
+        this.$swal('Warning !', 'กรุณาเลือกการเดินทาง' , 'warning')
+      }else{
+        this.person_partner[0].fullname = this.userLogin[0].fname+" "+this.userLogin[0].lname;
+        this.person_partner[0].dep = this.depart;
+        this.person_partner[0].travel = this.travel_type.travel_name;
+        this.person_partner[0].recoder = this.userLogin[0].idcard
+        this.form.cid_account = this.userLogin[0].idcard
+        this.form.cid_account_recoder = this.userLogin[0].idcard
+        this.form.start_date = this.formatdate(this.form.start_date)  
+        this.form.end_date = this.formatdate(this.form.end_date)  
+        this.form.start_travel = this.formatdate(this.form.start_travel)  
+        this.form.end_travel = this.formatdate(this.form.end_travel)  
+        this.form.book_owner_date = this.formatdate(this.form.book_owner_date)  
+        axios
+          .post(this.HOST+"/register/add",{
+              register: this.form,
+              register_partner: this.person_partner
+          })
+          .then(res => {
+            let data = res.data
+            console.log(data);
+
+            if(data[0].status == 200){
+              this.$swal({
+                position: 'top-end',
+                type: 'success',
+                title: 'Your work has been saved.',
+                showConfirmButton: false,
+                timer: 1500
+              })
+              this.$router.push('/services/register-all');
+            }else{
+              this.$swal('เกิดข้อผิดพลาด !!!', data[0].msg , 'error')
+            }
+          }) 
+          .catch(error => console.log("Error :", error));
+      }
       evt.preventDefault();
-      //alert(JSON.stringify(this.form));
+      //console.log(JSON.stringify(this.form));
     },
     getDate() {
       let today = new Date();
@@ -1188,7 +1186,11 @@ export default {
       }
     },
     deletePerson(index) {
-       this.person_partner.splice(index, 1);
+      this.person_partner.splice(index, 1);
+    },
+    formatdate(dateTime){
+      let dateNew = this.moment(dateTime).format('YYYY-MM-DD')
+      return `${dateNew}`
     }
   },
   mounted() {
@@ -1206,5 +1208,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+input[type=number]{
+  text-align: center;
 }
 </style>

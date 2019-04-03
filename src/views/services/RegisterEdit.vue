@@ -1224,7 +1224,7 @@ export default {
         if(data[0].status == 200){
           this.$swal('Updated', 'You successfully updated this data', 'success')
           setTimeout(() => {
-            this.$router.push('/services/register-edit');
+            this.$router.push('/services/register-all');
           },1000);
         }else{
           this.$swal('Update fail !!!', data[0].msg , 'error')
