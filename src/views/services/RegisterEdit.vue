@@ -1083,12 +1083,16 @@ export default {
         others_detail: "",
         expense_other: 0,
         expense_total: 0,
+        cid_account: "",
         code_master: "",
       },
       partner_name: null,
       partner_dep: null,
       partner_travel: null,
       person_partner: [],
+      travel_chagne: [{
+        travel_name : null
+      }],
       th: th,
       show: true,
       disabledDates: {},
@@ -1184,6 +1188,7 @@ export default {
         this.form.expense_other = this.dataRegis[0].expense_other
         this.form.expense_total = this.dataRegis[0].expense_total
         this.form.code_master = this.dataRegis[0].code_master
+        this.form.cid_account = this.dataRegis[0].cid_account
     },
     getPartner(cid, codeMaster){
       let url = this.HOST+"/register/partner/"+cid+"/"+codeMaster
@@ -1213,11 +1218,13 @@ export default {
     },
     onSubmit(evt) {
       //console.log(JSON.stringify(this.form));
-      // console.log(JSON.stringify(this.person_partner));
+      this.travel_chagne[0].travel_name = this.travel_type.travel_name
+      console.log(JSON.stringify(this.travel_chagne));
       axios
       .post(this.HOST+"/register/update",{
           register: this.form,
-          register_partner: this.person_partner
+          register_partner: this.person_partner,
+          travel_chagne : this.travel_chagne
       })
       .then(res => {
         let data = res.data
