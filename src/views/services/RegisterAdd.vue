@@ -39,7 +39,7 @@
                       id="phone"
                       name="phone"
                       placeholder=""
-                      
+                      :required="true"
                       autofocus
                     ></b-form-input>
                   </b-form-group>
@@ -240,6 +240,7 @@
                         :language="th"
                         v-model="form.book_owner_date"
                         sm="6"
+                        :required="true"
                       ></datepicker>
                     </b-input-group>
                   </b-form-group>
@@ -278,7 +279,7 @@
                       v-model="form.meeting_story"
                       id="meeting_story"
                       name="meeting_story"
-                      
+                      :required="true"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -298,7 +299,7 @@
                       v-model="form.meeting_owner"
                       id="meeting_owner"
                       name="meeting_owner"
-                      
+                      :required="true"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -315,7 +316,7 @@
                       v-model="form.meeting_host"
                       id="meeting_host"
                       name="meeting_host"
-                      
+                      :required="true"
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -334,7 +335,7 @@
                       v-model="form.meeting_type"
                       id="meeting_type"
                       name="meeting_type"
-                      
+                      :required="true"
                     >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option
@@ -365,8 +366,7 @@
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.start_date"
-                        name="start_date"
-                        
+                        :required="true"
                       ></datepicker> &nbsp;ถึง&nbsp;
                       <datepicker
                         :disabledDates="disabledFn"
@@ -374,7 +374,7 @@
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.end_date"
-                        name="end_date"
+                        :required="true"
                         
                       ></datepicker>
                       
@@ -396,9 +396,7 @@
                     <b-form-input
                       type="text"
                       v-model="form.meeting_place"
-                      id="meeting_place"
-                      name="meeting_place"
-                      
+                      :required="true"      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -410,7 +408,7 @@
                     label-for="meeting_place_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_place_type" >
+                    <b-form-select v-model="form.meeting_place_type" :required="true">
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option :value="1">ในเขตจังหวัด</option>
                       <option :value="2">นอกเขตจังหวัด</option>
@@ -439,12 +437,10 @@
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.start_travel"
-                        name="start_travel"
+                        :required="true"
                         
-                      ></datepicker>
-                      <!-- <b-form-input type="text" v-model="form.start_travel" name="start_travel" id="start_travel" placeholder></b-form-input> -->
-                    </b-input-group>
-                    <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
+                      ></datepicker>                      
+                    </b-input-group>                    
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
@@ -467,8 +463,7 @@
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.end_travel"
-                        name="end_travel"
-                        
+                        :required="true"                        
                       ></datepicker>
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
@@ -485,7 +480,7 @@
                     label-for="strategy"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.strategy" id="strategy" name="strategy" >
+                    <b-form-select v-model="form.strategy" :required="true" >
                       <option value="" disabled>เลือกประเด็นยุทธศาสตร์</option>
                       <option
                         v-for="(str,key) in meetingStrategy"
@@ -504,7 +499,7 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" >
+                    <b-form-select v-model="form.meeting_is" :required="true" >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
@@ -525,7 +520,7 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" >
+                    <b-form-select v-model="form.budget_type" :required="true" >
                       <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
@@ -546,9 +541,7 @@
                   >
                     <b-form-input
                       type="text"
-                      v-model="form.budget_other"
-                      id="budget_other"
-                      name="budget_other"
+                      v-model="form.budget_other"                      
                       placeholder
                     ></b-form-input>
                   </b-form-group>
