@@ -81,8 +81,8 @@ export default {
   name: "profiles",
   data() {
     return {
-      userLogin: JSON.parse(window.sessionStorage.getItem('user-login')),
-      items_pos:JSON.parse(window.sessionStorage.getItem('position')),
+      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
+      items_pos:JSON.parse(window.localStorage.getItem('position')),
       form:{
           fname: "",
           lname: "",
@@ -100,7 +100,7 @@ export default {
             this.form.pos_no = this.position.pos_no
             this.form.idcard = this.userLogin[0].idcard
             axios
-                .post(this.HOST+"/profile",{
+                .post(this.HOST+"/hrd/profile",{
                     profile: this.form,
                 })
                 .then(res => {
@@ -144,7 +144,7 @@ export default {
     updateNewdata(){
         let idcard = this.userLogin[0].idcard
         axios
-        .get(this.HOST+"/profile/"+idcard)
+        .get(this.HOST+"/hrd/profile/"+idcard)
         .then(res => {
             let data = res.data
             if(data.length > 0){

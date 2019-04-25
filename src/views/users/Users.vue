@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       search: '',
-      results: [],
+      results: JSON.parse(window.localStorage.getItem('rehuser')),
       fields: [
         { key: "idcard" , label: "เลขบัตรประชาชน", sortable: true},
         { key: "fullname" , label: "ชื่่อ-สกุล", sortable: true},
@@ -106,7 +106,7 @@ export default {
     },
     updateMember(){
       axios
-      .get(this.HOST+"/personal")
+      .get(this.HOST+"/hrd/personal")
       .then(res => {
         let data = res.data
           if(data[0].status == 200){
@@ -123,10 +123,6 @@ export default {
     }
   },
   mounted() {
-    axios
-      .get(this.HOST+"/rehuser")
-      .then(res => (this.results = res.data))
-      .catch(error => console.log("Error", error));
   }
 };
 

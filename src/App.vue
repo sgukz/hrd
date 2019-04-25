@@ -6,11 +6,11 @@
 export default {
   name: 'app',
   mounted() {
-    // if (window.sessionStorage.getItem('user-login')){
+    // if (window.localStorage.getItem('user-login')){
     //   this.$router.push('/services/register-all');
     // }else{
     //   this.$router.push('/pages/login')
-    // } 
+    // }
   }
 }
 </script>

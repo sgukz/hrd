@@ -463,7 +463,8 @@
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.end_travel"
-                        :required="true"                        
+                        :required="true"
+                        
                       ></datepicker>
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
@@ -480,7 +481,7 @@
                     label-for="strategy"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.strategy" :required="true" >
+                    <b-form-select v-model="form.strategy" id="strategy" name="strategy" >
                       <option value="" disabled>เลือกประเด็นยุทธศาสตร์</option>
                       <option
                         v-for="(str,key) in meetingStrategy"
@@ -499,7 +500,7 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_is" :required="true" >
+                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" >
                       <option value="" disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
@@ -520,11 +521,11 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.budget_type" :required="true" >
+                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" >
                       <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
-                        v-bind:key="key.budget_code"
+                        v-bind:key="key"
                         :value="m_budget.budget_code"
                       >{{m_budget.budget_name}}</option>
                     </b-form-select>
@@ -541,7 +542,9 @@
                   >
                     <b-form-input
                       type="text"
-                      v-model="form.budget_other"                      
+                      v-model="form.budget_other"
+                      id="budget_other"
+                      name="budget_other"
                       placeholder
                     ></b-form-input>
                   </b-form-group>
@@ -995,12 +998,12 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.sessionStorage.getItem('user-login')),
+      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
       full_name: "",
       depart: "",
       travel_type: null,
-      department: JSON.parse(window.sessionStorage.getItem('department')),
-      employee: JSON.parse(window.sessionStorage.getItem('rehuser')),
+      department: JSON.parse(window.localStorage.getItem('department')),
+      employee: JSON.parse(window.localStorage.getItem('rehuser')),
       travel: MeetingTravel,
       meetingType: MeetingType,
       meetingIs: MeetingIs,
@@ -1110,7 +1113,7 @@ export default {
         this.form.end_travel = this.formatdate(this.form.end_travel)  
         this.form.book_owner_date = this.formatdate(this.form.book_owner_date)  
         axios
-          .post(this.HOST+"/register/add",{
+          .post(this.HOST+"/hrd/create",{
               register: this.form,
               register_partner: this.person_partner
           })

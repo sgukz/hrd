@@ -59,22 +59,23 @@ export default {
     login(evt) {
       let url = this.HOST
       axios
-      .post(url+"/login",{
+      .post(url+"/login/v1",{
           auth: this.form
       })
       .then(res => { 
         let resp = res.data
+        console.log(resp);
         if(resp.length > 0){
           if(resp[0].chkLog == 1 && resp[0].pos_no != ""){
             let parsed = JSON.stringify(res.data);
-            window.sessionStorage.setItem('user-login', parsed);
+            window.localStorage.setItem('user-login', parsed);
             this.getDepartment();
             this.getEmployee();
             this.getPositions();
             this.$router.push('/services/register-all');               
           }else if(resp[0].chkLog == 1 && resp[0].pos_no == ""){
             let parsed = JSON.stringify(res.data);
-            window.sessionStorage.setItem('user-login', parsed);
+            window.localStorage.setItem('user-login', parsed);
             this.$router.push('/profile/Profiles');
             this.getDepartment();
             this.getEmployee();
@@ -89,36 +90,36 @@ export default {
     },
     getDepartment(){
       axios
-        .get(this.HOST+"/department")
+        .get(this.HOST+"/hrd/department")
         .then(res => {
           let parsed = JSON.stringify(res.data);
-          window.sessionStorage.setItem('department', parsed);
+          window.localStorage.setItem('department', parsed);
         })
         .catch(error => console.log("Error", error));
     },
     getEmployee(){
       axios
-        .get(this.HOST+"/rehuser")
+        .get(this.HOST+"/users/rehuser")
         .then(res => {
           let parsed = JSON.stringify(res.data);
-          window.sessionStorage.setItem('rehuser', parsed);
+          window.localStorage.setItem('rehuser', parsed);
         })
         .catch(error => console.log("Error", error));
     },
     getPositions(){
       axios
-        .get(this.HOST+"/position")
+        .get(this.HOST+"/hrd/position")
         .then(res => {
           let parsed = JSON.stringify(res.data);
-          window.sessionStorage.setItem('position', parsed);
+          window.localStorage.setItem('position', parsed);
         })
         .catch(error => console.log("Error", error));
     }
   },
   mounted() {
-    if (window.sessionStorage.getItem('user-login')){
+    if (window.localStorage.getItem('user-login')){
       this.$router.push('/services/register-all')
-    } 
+    }
   }
 }
 </script>

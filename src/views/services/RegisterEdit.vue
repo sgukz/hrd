@@ -163,7 +163,7 @@
                         <b-button v-if="person.cid === ''" variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePerson(key)">
                           <i class="fa fa-trash" aria-pressed="true" ></i>
                         </b-button>
-                        <b-button v-else variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePersonOld(key, person.cid, person.code_master)">
+                        <b-button v-else variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePersonOld(key, person.cid, person.re_id)">
                           <i class="fa fa-trash" aria-pressed="true" ></i>
                         </b-button>
                       </b-form-group>
@@ -535,7 +535,7 @@
                       <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
-                        v-bind:key="key.budget_code"
+                        v-bind:key="key"
                         :value="m_budget.budget_code"
                       >{{m_budget.budget_name}}</option>
                     </b-form-select>
@@ -1021,14 +1021,14 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.sessionStorage.getItem('user-login')),
+      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
       dataRegis: JSON.parse(window.localStorage.getItem('meeting_register')),
       dataUpdate: JSON.parse(window.localStorage.getItem("update")),
       full_name: "",
       depart: "",
       travel_type: "",
-      department: JSON.parse(window.sessionStorage.getItem('department')),
-      employee: JSON.parse(window.sessionStorage.getItem('rehuser')),
+      department: JSON.parse(window.localStorage.getItem('department')),
+      employee: JSON.parse(window.localStorage.getItem('rehuser')),
       travel: MeetingTravel,
       meetingType: MeetingType,
       meetingIs: MeetingIs,
@@ -1084,7 +1084,7 @@ export default {
         expense_other: 0,
         expense_total: 0,
         cid_account: "",
-        code_master: "",
+        re_id: "",
       },
       partner_name: null,
       partner_dep: null,
@@ -1187,21 +1187,23 @@ export default {
         this.form.others_detail = this.dataRegis[0].others_detail
         this.form.expense_other = this.dataRegis[0].expense_other
         this.form.expense_total = this.dataRegis[0].expense_total
-        this.form.code_master = this.dataRegis[0].code_master
         this.form.cid_account = this.dataRegis[0].cid_account
+        this.form.re_id = this.dataRegis[0].re_id
     },
-    getPartner(cid, codeMaster){
-      let url = this.HOST+"/register/partner/"+cid+"/"+codeMaster
+    getPartner(cid, re_id){
+      let url = this.HOST+"/hrd/partner/"+cid+"/"+re_id
       axios
         .get(url)
         .then(res => {
           let dataPartner = res.data
+          console.log(dataPartner);
+          
           for(var i=0;i<dataPartner.length;i++){
             this.person_partner.push({
               id: i+1,
               code_y: dataPartner[i].code_y,
               code_num: dataPartner[i].code_num,
-              code_master: dataPartner[i].code_master,
+              re_id: dataPartner[i].re_id,
               re_date: (dataPartner[i].re_date != null)?this.formatDateEN(dataPartner[i].re_date):"", 
               fullname: dataPartner[i].fullname, 
               dep: dataPartner[i].dep_code_name, 
@@ -1211,7 +1213,7 @@ export default {
             });
           }
           //console.log(res.data);
-          //console.log(this.person_partner);
+          console.log(this.person_partner);
 
         })
         .catch(error => console.log("Error", error));
@@ -1221,20 +1223,22 @@ export default {
       this.travel_chagne[0].travel_name = this.travel_type.travel_name
       console.log(JSON.stringify(this.travel_chagne));
       axios
-      .post(this.HOST+"/register/update",{
+      .post(this.HOST+"/hrd/update",{
           register: this.form,
           register_partner: this.person_partner,
           travel_chagne : this.travel_chagne
       })
       .then(res => {
         let data = res.data
+        console.log(data);
+        
         if(data[0].status == 200){
           this.$swal('Updated', 'You successfully updated this data', 'success')
           setTimeout(() => {
             this.$router.push('/services/register-all');
           },1000);
         }else{
-          this.$swal('Update fail !!!', data[0].msg , 'error')
+          this.$swal('เกิดข้อผิดพลาด !!!', data[0].msg , 'error')
         }
       }) 
       .catch(error => console.log("Error :", error));
@@ -1246,9 +1250,7 @@ export default {
         var id_plus = this.person_partner.length + 1;
         this.person_partner.push({
           id: id_plus, 
-          code_y: this.dataRegis[0].code_y,
-          code_num: this.dataRegis[0].code_num, 
-          code_master: this.dataRegis[0].code_master, 
+          re_id: this.dataRegis[0].re_id, 
           re_date: date_now,
           fullname: this.partner_name.fullname, 
           dep: this.partner_dep.dep_code_name, 
@@ -1267,9 +1269,9 @@ export default {
     deletePerson(index) {
        this.person_partner.splice(index, 1);
     },
-    deletePersonOld(index, cid, codemaster){
+    deletePersonOld(index, cid, re_id){
       axios
-        .get(this.HOST+"/register/deletepartner/"+cid+"/"+codemaster)
+        .delete(this.HOST+"/hrd/deletepartner/"+cid+"/"+re_id)
         .then(res => {
           let data = res.data
           if(data[0].status == 200){
@@ -1287,8 +1289,9 @@ export default {
               position: 'top-end',
               type: 'error',
               title: 'เกิดข้อผิดพลาด !!!',
-              showConfirmButton: false,
-              timer: 1500
+              text: data[0].msg
+              // showConfirmButton: false,
+              // timer: 1500
             })
           }
         })
@@ -1298,7 +1301,7 @@ export default {
   mounted() {
     // this.getDepartment();
     // this.getEmployee();
-    this.getPartner(this.dataUpdate[0].cid, this.dataUpdate[0].codeMaster);
+    this.getPartner(this.dataUpdate[0].cid, this.dataUpdate[0].re_id);
     this.full_name = this.userLogin[0].fullname;
     this.depart = this.userLogin[0].dep_name;
     this.setData();

@@ -27,12 +27,11 @@ export default {
   data: () => {
     return { 
       itemsCount: 42 ,
-      userLogin: JSON.parse(window.sessionStorage.getItem('user-login'))
+      userLogin: JSON.parse(window.localStorage.getItem('user-login'))
     }
   },
   methods: {
     logout(){
-      window.sessionStorage.clear();
       window.localStorage.clear();
       this.$router.push('/pages/login')
     }

@@ -11,8 +11,8 @@
               <template>
                 <div>
                   <b-table striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage">
-                    <template slot="code_master" slot-scope="data">
-                      <strong>{{data.item.code_master}}</strong>
+                    <template slot="id" slot-scope="data">
+                      <strong>{{data.item.re_id}}</strong>
                     </template>
                     <template slot="created_at" slot-scope="data">
                       <strong>{{formateDateTH(data.item.created_at)}}</strong>
@@ -21,7 +21,8 @@
                       <b-button variant="light" size="sm"><strong>{{formateDate(data.item.datemeeting)}}</strong></b-button>
                     </template>
                     <template slot="re_id" slot-scope="data">
-                      <a :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a>
+                      <a :href="'http://localhost:81/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a>
+                      <!-- <a :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a> -->
                     </template>
                     <template slot="actions" slot-scope="data">
                       <span v-if="data.item.cid_your==data.item.cid_partner">
@@ -29,7 +30,7 @@
                           <template slot="button-content">
                             <i class="fa fa-cogs"></i><span class="sr-only">Search</span>
                           </template>
-                          <b-dropdown-item v-on:click="editRegister(userLogin[0].idcard,data.item.code_master)"><i class="fa fa-edit"></i> แก้ไข</b-dropdown-item>
+                          <b-dropdown-item v-on:click="editRegister(userLogin[0].idcard,data.item.re_id)"><i class="fa fa-edit"></i> แก้ไข</b-dropdown-item>
                           <b-dropdown-item v-on:click="deleteRegister(data.item.re_id)"><i class="fa fa-trash"></i> ลบ</b-dropdown-item>
                         </b-dropdown>
                       </span>
@@ -75,14 +76,14 @@ export default {
   },
   data() {
       return {
-        userLogin: JSON.parse(window.sessionStorage.getItem('user-login')),
+        userLogin: JSON.parse(window.localStorage.getItem('user-login')),
         currentPage: 1,
         perPage: 10,
         totalRows: 0,
         // Note 'isActive' is left out and will not appear in the rendered table
         fields: [
           {
-            key: "code_master",
+            key: "id",
             label: 'เลขที่',
             sortable: true
           },
@@ -124,7 +125,7 @@ export default {
       loadData(){
         let idcard = this.userLogin[0].idcard
         axios
-          .get(this.HOST+"/register/"+idcard)
+          .get(this.HOST+"/hrd/"+idcard)
           .then(res => {
             this.items = res.data;
             localStorage.removeItem("update")
@@ -133,15 +134,15 @@ export default {
           })
           .catch(error => console.log(error));
       },
-      editRegister(cid, codeMaster){
+      editRegister(cid, re_id){
         let data = [{
           cid,
-          codeMaster
+          re_id
         }]
         localStorage.setItem("update", JSON.stringify(data))
         let dataUpdate = JSON.parse(localStorage.getItem("update"));
         axios
-        .get(this.HOST+"/register/edit/"+dataUpdate[0].cid+"/"+dataUpdate[0].codeMaster)
+        .get(this.HOST+"/hrd/view/"+dataUpdate[0].cid+"/"+dataUpdate[0].re_id)
         .then(res => {
             let parsed = JSON.stringify(res.data);
             localStorage.setItem("meeting_register", parsed);
@@ -164,14 +165,14 @@ export default {
         }).then((result) => {
           if(result.value) {
             axios
-            .get(this.HOST+"/register/delete/"+id)
+            .delete(this.HOST+"/hrd/delete/"+id)
             .then(res => {
               let data = res.data
               if(data[0].status == 200){
                 this.$swal('Deleted', 'You successfully deleted this data', 'success')
                 this.loadData();
               }else{
-                this.$swal('Delete fail !!!', data[0].msg , 'error')
+                this.$swal('เกิดข้อผิดพลาด !!!', data[0].msg , 'error')
               }
             })
             .catch(error => console.log(error));
