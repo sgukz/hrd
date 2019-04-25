@@ -12,11 +12,6 @@
         <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item> -->
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
-        <!-- <div v-for="(userList, key) in user" v-bind:key="key">
-          <b-nav-item class="d-md-down-none">
-            <i class="icon-user"></i> {{userList.fname}}
-          </b-nav-item>
-        </div> -->
         <DefaultHeaderDropdownAccnt/>
       </b-navbar-nav>
       <AsideToggler class="d-none d-lg-block" />
@@ -27,7 +22,8 @@
         <SidebarHeader/>
         <SidebarForm/>
         <SidebarNav :navItems="nav"></SidebarNav>
-        <SidebarFooter/>
+        <SidebarFooter>
+        </SidebarFooter>
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
@@ -56,7 +52,14 @@
 </template>
 
 <script>
-import nav from '@/_nav'
+let roleUser = JSON.parse(window.localStorage.getItem('user-login'));
+if(roleUser[0].role == 5){
+  
+}else{
+ 
+}
+import navuser from '@/_navuser'
+import navadmin from '@/_navadmin'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
 import DefaultAside from './DefaultAside'
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt'
@@ -81,16 +84,34 @@ export default {
   },
   data () {
     return {
-      nav: nav.items
+      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
+      nav: navuser.items,
     }
   },
   computed: {
     name () {
       return this.$route.name
     },
+    role(){
+      if(this.userLogin[0].role == 5){
+        return true;
+      }
+    },
     list () {
       return this.$route.matched.filter((route) => route.name || route.meta.label )
     }
+  },
+  methods: {
+    checkRole(){
+      if(this.userLogin[0].role == 5){
+        this.nav = navadmin.items
+      }else{
+        this.nav = navuser.items
+      }
+    }
+  },
+  mounted() {
+    this.checkRole();
   }
 }
 </script>

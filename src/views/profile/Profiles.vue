@@ -118,9 +118,9 @@ export default {
                   }else{
                         this.$swal({
                             title: 'แจ้งเตือน', 
-                            text: data, 
-                            type: 'Error',
-                            timer: 2000
+                            text: data[0].msg, 
+                            type: 'error',
+                            //timer: 2000
                         }) 
                   }
                 }) 

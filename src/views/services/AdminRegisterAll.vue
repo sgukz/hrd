@@ -25,12 +25,12 @@
                       <a :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a>
                     </template>
                     <template slot="actions" slot-scope="data">
-                      <span v-if="data.item.cid_your==data.item.cid_partner">
+                      <span>
                         <b-dropdown variant="link" size="lg" no-caret>
                           <template slot="button-content">
                             <i class="fa fa-cogs"></i><span class="sr-only">Search</span>
                           </template>
-                          <b-dropdown-item v-on:click="editRegister(userLogin[0].idcard,data.item.re_id)"><i class="fa fa-edit"></i> แก้ไข</b-dropdown-item>
+                          <b-dropdown-item v-on:click="editRegister(data.item.cid_your,data.item.re_id)"><i class="fa fa-edit"></i> แก้ไข</b-dropdown-item>
                           <b-dropdown-item v-on:click="deleteRegister(data.item.re_id)"><i class="fa fa-trash"></i> ลบ</b-dropdown-item>
                         </b-dropdown>
                       </span>
@@ -67,7 +67,7 @@ let thmonth = {
   "10": "ตุลาคม","11": "พฤศจิกายน","12": "ธันวาคม"
 };
 export default {
-  name: 'register-all',
+  name: 'admin-register-all',
   props: {
     caption: {
       type: String,
@@ -123,11 +123,12 @@ export default {
     },
     methods: {
       loadData(){
-        let idcard = this.userLogin[0].idcard
         axios
-          .get(this.HOST+"/hrd/"+idcard)
+          .get(this.HOST+"/hrd/registerall")
           .then(res => {
             this.items = res.data;
+            let parsed = JSON.stringify(res.data);
+            window.localStorage.setItem("cid-meeting", parsed);
             localStorage.removeItem("update")
             localStorage.removeItem("meeting_register")
             localStorage.removeItem("meeting_register_partner")

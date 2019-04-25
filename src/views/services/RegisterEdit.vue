@@ -1299,11 +1299,9 @@ export default {
     }
   },
   mounted() {
-    // this.getDepartment();
-    // this.getEmployee();
     this.getPartner(this.dataUpdate[0].cid, this.dataUpdate[0].re_id);
-    this.full_name = this.userLogin[0].fullname;
-    this.depart = this.userLogin[0].dep_name;
+    this.full_name = this.dataRegis[0].fullname;
+    this.depart = this.dataRegis[0].dep_code_name;
     this.setData();
     
   }

@@ -11,6 +11,7 @@ const Dashboard = () => import('@/views/Dashboard');
 const ServicesRegisAdd = () => import('@/views/services/RegisterAdd');
 const ServicesRegisEdit = () => import('@/views/services/RegisterEdit');
 const ServicesRegisAll = () => import('@/views/services/RegisterAll');
+const ServicesAdminRegisAll = () => import('@/views/services/AdminRegisterAll');
 
 const Profiles = () => import('@/views/profile/Profiles');
 const Colors = () => import('@/views/theme/Colors');
@@ -97,13 +98,18 @@ export default new Router({
             },
             {
               path: 'register-edit',
-              name: 'แก้ไขข้อมูลขออนุมัตืไปราชการ',
+              name: 'แก้ไขข้อมูลขออนุมัติไปราชการ',
               component: ServicesRegisEdit
             },
             {
               path: 'register-all',
-              name: 'ข้อมูลขออนุมัตืไปราชการ',
+              name: 'ข้อมูลขออนุมัติไปราชการ',
               component: ServicesRegisAll
+            },
+            {
+              path: 'admin-register-all',
+              name: 'ข้อมูลขออนุมัติไปราชการทั้งหมด',
+              component: ServicesAdminRegisAll
             }
           ]
         },
