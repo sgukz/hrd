@@ -361,7 +361,6 @@
                         </b-input-group-text>
                       </b-input-group-prepend>
                       <datepicker
-                        :disabledDates="disabledFn"
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"
@@ -369,7 +368,6 @@
                         :required="true"
                       ></datepicker> &nbsp;ถึง&nbsp;
                       <datepicker
-                        :disabledDates="disabledFn"
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"
@@ -432,7 +430,6 @@
                         </b-input-group-text>
                       </b-input-group-prepend>
                       <datepicker
-                        :disabledDates="disabledFn"
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"
@@ -458,7 +455,6 @@
                         </b-input-group-text>
                       </b-input-group-prepend>
                       <datepicker
-                        :disabledDates="disabledFn"
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"

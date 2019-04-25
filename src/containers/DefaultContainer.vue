@@ -1,20 +1,26 @@
 <template>
   <div class="app">
     <AppHeader fixed>
-      <SidebarToggler class="d-lg-none" display="md" mobile />
+      <SidebarToggler class="d-lg-none" display="md" mobile/>
       <b-link class="navbar-brand" to="#">
         <img class="navbar-brand-full" src="img/hrd.jpg" width="89" height="35" alt="CoreUI Logo">
-        <img class="navbar-brand-minimized" src="img/hrd.jpg" width="30" height="30" alt="CoreUI Logo">
+        <img
+          class="navbar-brand-minimized"
+          src="img/hrd.jpg"
+          width="30"
+          height="30"
+          alt="CoreUI Logo"
+        >
       </b-link>
-      <SidebarToggler class="d-md-down-none" display="lg" />
+      <SidebarToggler class="d-md-down-none" display="lg"/>
       <b-navbar-nav class="d-md-down-none">
         <!-- <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
-        <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item> -->
+        <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>-->
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
       </b-navbar-nav>
-      <AsideToggler class="d-none d-lg-block" />
+      <AsideToggler class="d-none d-lg-block"/>
       <!--<AsideToggler class="d-lg-none" mobile />-->
     </AppHeader>
     <div class="app-body">
@@ -22,8 +28,7 @@
         <SidebarHeader/>
         <SidebarForm/>
         <SidebarNav :navItems="nav"></SidebarNav>
-        <SidebarFooter>
-        </SidebarFooter>
+        <SidebarFooter></SidebarFooter>
         <SidebarMinimizer/>
       </AppSidebar>
       <main class="main">
@@ -52,12 +57,6 @@
 </template>
 
 <script>
-let roleUser = JSON.parse(window.localStorage.getItem('user-login'));
-if(roleUser[0].role == 5){
-  
-}else{
- 
-}
 import navuser from '@/_navuser'
 import navadmin from '@/_navadmin'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
@@ -84,29 +83,28 @@ export default {
   },
   data () {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
+      userLogin: "",
       nav: navuser.items,
     }
   },
   computed: {
     name () {
       return this.$route.name
-    },
-    role(){
-      if(this.userLogin[0].role == 5){
-        return true;
-      }
-    },
+    }
+    ,
     list () {
       return this.$route.matched.filter((route) => route.name || route.meta.label )
     }
   },
   methods: {
     checkRole(){
-      if(this.userLogin[0].role == 5){
-        this.nav = navadmin.items
-      }else{
-        this.nav = navuser.items
+      if (window.localStorage.getItem('user-login')){
+        this.userLogin = JSON.parse(window.localStorage.getItem('user-login'));
+        if(this.userLogin != null && this.userLogin[0].role == 5){
+          this.nav = navadmin.items
+        }else{
+          this.nav = navuser.items
+        }
       }
     }
   },
