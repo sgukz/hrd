@@ -53,12 +53,21 @@
 </template>
 
 <script>
+const toTwoDigits = num => (num < 10 ? "0" + num : num);
+let today = new Date();
+let year = today.getFullYear();
+let year_TH = parseInt(today.getFullYear()) + 543;
+let month = toTwoDigits(today.getMonth() + 1);
+let day = toTwoDigits(today.getDate());
+let ToDay = today.getDate();
+let date_now = `${year}-${month}-${day}`;
 import axios from "axios";
 export default {
   name: "Login",
   data() {
     return {
       login_user: [],
+      date_login: window.localStorage.getItem("date-login"),
       form: {
         idcard: ""
       }
@@ -73,26 +82,17 @@ export default {
         })
         .then(res => {
           let resp = res.data;
-          console.log(resp);
+          //console.log(resp);
           if (resp.length > 0) {
-            if (resp[0].chkLog == 1 && resp[0].pos_no != "") {
+            if (resp[0].chkLog == 1) {
               let parsed = JSON.stringify(res.data);
               window.localStorage.setItem("user-login", parsed);
+              window.localStorage.setItem("date-login", date_now);
               this.getDepartment();
               this.getEmployee();
-              this.getPositions();
-               setTimeout(() => {
-                this.$router.push('/services/register-all');
-              },1000);
-            } else if (resp[0].chkLog == 1 && resp[0].pos_no == "") {
-              let parsed = JSON.stringify(res.data);
-              window.localStorage.setItem("user-login", parsed);
-              this.getDepartment();
-              this.getEmployee();
-              this.getPositions();
               setTimeout(() => {
-                this.$router.push("/profile/Profiles");
-              }, 1500);
+                this.$router.push("/services/register-all");
+              }, 1000);
             }
           } else {
             this.$swal(
@@ -122,21 +122,20 @@ export default {
           window.localStorage.setItem("rehuser", parsed);
         })
         .catch(error => console.log("Error", error));
-    },
-    getPositions() {
-      axios
-        .get(this.HOST + "/hrd/position")
-        .then(res => {
-          let parsed = JSON.stringify(res.data);
-          window.localStorage.setItem("position", parsed);
-        })
-        .catch(error => console.log("Error", error));
     }
   },
   mounted() {
-    if (window.localStorage.getItem("user-login")) {
-      this.$router.push("/services/register-all");
-    }
+    window.localStorage.clear();
+    // if (window.localStorage.getItem("user-login")) {
+    //   if (this.date_login != date_now) {
+        
+    //     this.$router.push("/pages/login");
+    //   } else {
+    //     this.$router.push("/services/register-all");
+    //   }
+    // } else {
+    //   this.$router.push("/pages/login");
+    // }
   }
 };
 </script>

@@ -38,7 +38,7 @@
                       v-model="form.phone"
                       id="phone"
                       name="phone"
-                      placeholder=""
+                      placeholder
                       :required="true"
                       autofocus
                     ></b-form-input>
@@ -71,7 +71,7 @@
                     label-for="partnerdepart"
                     :horizontal="true"
                   >
-                  <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
+                    <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="4">
@@ -81,7 +81,13 @@
                     label-for="travel_type"
                     :horizontal="true"
                   >
-                  <v-select v-model="travel_type" :required="true" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>
+                    <v-select
+                      v-model="travel_type"
+                      :required="true"
+                      placeholder="เลือกการเดินทาง"
+                      label="travel_name"
+                      :options="travel"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -93,7 +99,12 @@
                     label-for="partner"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_name" placeholder="เลือกรายชื่อ" label="fullname" :options="employee"></v-select>
+                    <v-select
+                      v-model="partner_name"
+                      placeholder="เลือกรายชื่อ"
+                      label="fullname"
+                      :options="employee"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="4">
@@ -103,7 +114,12 @@
                     label-for="department_partner"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_dep" placeholder="เลือกหน่วยงาน" label="dep_code_name" :options="department"></v-select>
+                    <v-select
+                      v-model="partner_dep"
+                      placeholder="เลือกหน่วยงาน"
+                      label="dep_code_name"
+                      :options="department"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="3">
@@ -113,13 +129,26 @@
                     label-for="travel_by"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_travel" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>
+                    <v-select
+                      v-model="partner_travel"
+                      placeholder="เลือกการเดินทาง"
+                      label="travel_name"
+                      :options="travel"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="1">
                   <b-form-group>
-                    <b-button pressed block variant="primary" size="sm" aria-pressed="true" v-on:click="addPerson()" name="addPerson">
-                      <i class="fa fa-plus" aria-pressed="true" ></i> เพิ่ม
+                    <b-button
+                      pressed
+                      block
+                      variant="primary"
+                      size="sm"
+                      aria-pressed="true"
+                      v-on:click="addPerson()"
+                      name="addPerson"
+                    >
+                      <i class="fa fa-plus" aria-pressed="true"></i> เพิ่ม
                     </b-button>
                   </b-form-group>
                 </b-col>
@@ -130,12 +159,12 @@
                   <b-row>
                     <b-col sm="4">
                       <b-form-group
-                        label=""
+                        label
                         label-class="text-sm-right"
                         label-for="partnerlist"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.fullname"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.fullname"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="4">
@@ -145,7 +174,7 @@
                         label-for="partnerdepart"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.dep"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.dep"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="3">
@@ -155,17 +184,23 @@
                         label-for="travel_type"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.travel"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.travel"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="1">
                       <b-form-group>
-                        <b-button variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePerson(key)">
-                          <i class="fa fa-trash" aria-pressed="true" ></i>
+                        <b-button
+                          variant="danger"
+                          size="sm"
+                          aria-pressed="true"
+                          name="deletePerson"
+                          v-on:click="deletePerson(key)"
+                        >
+                          <i class="fa fa-trash" aria-pressed="true"></i>
                         </b-button>
                       </b-form-group>
                     </b-col>
-                  </b-row>              
+                  </b-row>
                 </div>
               </div>
 
@@ -183,13 +218,18 @@
                     label-for="register-book-hos-id"
                     :horizontal="true"
                   >
-                    <b-form-input v-model="form.book_hos_id" type="text" id="book_hos_id" name="book_hos_id"></b-form-input>
+                    <b-form-input
+                      v-model="form.book_hos_id"
+                      type="text"
+                      id="book_hos_id"
+                      name="book_hos_id"
+                    ></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="2">
-                  <b-form-group  :horizontal="true">
+                  <b-form-group :horizontal="true">
                     <b-form-select v-model="form.book_hos_year">
-                      <option value="" selected disabled>ปี พ.ศ.</option>
+                      <option value selected disabled>ปี พ.ศ.</option>
                       <option
                         v-for="(year, key) in arrayYear"
                         v-bind:key="key"
@@ -252,14 +292,12 @@
                     :label-cols="2"
                     label-for="book_owner"
                     :horizontal="true"
-                    
                   >
                     <b-form-input
                       type="text"
                       v-model="form.book_owner"
                       id="book_owner"
                       name="book_owner"
-                      
                     ></b-form-input>
                   </b-form-group>
                 </b-col>
@@ -337,7 +375,7 @@
                       name="meeting_type"
                       :required="true"
                     >
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_type, key) in meetingType"
                         v-bind:key="key"
@@ -366,16 +404,14 @@
                         :language="th"
                         v-model="form.start_date"
                         :required="true"
-                      ></datepicker> &nbsp;ถึง&nbsp;
+                      ></datepicker>&nbsp;ถึง&nbsp;
                       <datepicker
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
                         :language="th"
                         v-model="form.end_date"
                         :required="true"
-                        
                       ></datepicker>
-                      
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
                   </b-form-group>
@@ -391,11 +427,7 @@
                     label-for="meeting_place"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.meeting_place"
-                      :required="true"      
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.meeting_place" :required="true"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
@@ -407,7 +439,7 @@
                     :horizontal="true"
                   >
                     <b-form-select v-model="form.meeting_place_type" :required="true">
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option :value="1">ในเขตจังหวัด</option>
                       <option :value="2">นอกเขตจังหวัด</option>
                     </b-form-select>
@@ -435,9 +467,8 @@
                         :language="th"
                         v-model="form.start_travel"
                         :required="true"
-                        
-                      ></datepicker>                      
-                    </b-input-group>                    
+                      ></datepicker>
+                    </b-input-group>
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
@@ -460,7 +491,6 @@
                         :language="th"
                         v-model="form.end_travel"
                         :required="true"
-                        
                       ></datepicker>
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
@@ -477,8 +507,8 @@
                     label-for="strategy"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.strategy" id="strategy" name="strategy" >
-                      <option value="" disabled>เลือกประเด็นยุทธศาสตร์</option>
+                    <b-form-select v-model="form.strategy" id="strategy" name="strategy">
+                      <option value disabled>เลือกประเด็นยุทธศาสตร์</option>
                       <option
                         v-for="(str,key) in meetingStrategy"
                         v-bind:key="key"
@@ -496,8 +526,8 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" >
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is">
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
                         v-bind:key="key"
@@ -517,8 +547,8 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" >
-                      <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
+                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type">
+                      <option value disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
                         v-bind:key="key"
@@ -734,12 +764,7 @@
                     :horizontal="true"
                   >
                     <div class="col-sm-12">
-                      <b-form-input
-                        type="text"
-                        v-model="form.distance"
-                        sm
-                        placeholder
-                      ></b-form-input>
+                      <b-form-input type="text" v-model="form.distance" sm placeholder></b-form-input>
                     </div>
                   </b-form-group>
                 </b-col>
@@ -978,7 +1003,7 @@ import MeetingBudget from "./data/MeetingBudget";
 const toTwoDigits = num => (num < 10 ? "0" + num : num);
 let today = new Date();
 let year = today.getFullYear();
-let year_TH = parseInt(today.getFullYear())+543;
+let year_TH = parseInt(today.getFullYear()) + 543;
 let month = toTwoDigits(today.getMonth() + 1);
 let day = toTwoDigits(today.getDate());
 let ToDay = today.getDate();
@@ -994,21 +1019,21 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
+      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
       full_name: "",
       depart: "",
       travel_type: null,
-      department: JSON.parse(window.localStorage.getItem('department')),
-      employee: JSON.parse(window.localStorage.getItem('rehuser')),
+      department: JSON.parse(window.localStorage.getItem("department")),
+      employee: JSON.parse(window.localStorage.getItem("rehuser")),
       travel: MeetingTravel,
       meetingType: MeetingType,
       meetingIs: MeetingIs,
       meetingStrategy: MeetingStrategy,
       meetingBudget: MeetingBudget,
-      arrayYear:[
-        {year:year_TH-1},
-        {year:year_TH},
-        {year:year_TH+1},
+      arrayYear: [
+        { year: year_TH - 1 },
+        { year: year_TH },
+        { year: year_TH + 1 }
       ],
       selected: null,
       form: {
@@ -1029,7 +1054,7 @@ export default {
         book_owner: "",
         book_owner_date: "",
         book_hos_id: "",
-        book_hos_year:"",
+        book_hos_year: "",
         budget_type: "",
         budget_other: "",
         travel_government_car: "",
@@ -1055,19 +1080,21 @@ export default {
         expense_other: 0,
         expense_total: 0,
         cid_account: "",
-        cid_account_recoder: "",
+        cid_account_recoder: ""
       },
       partner_name: null,
       partner_dep: null,
       partner_travel: null,
-      person_partner: [{
-        id: 1, 
-        re_date: date_now, 
-        fullname: "", 
-        dep: "", 
-        travel: null ,
-        recoder: ""
-      }],
+      person_partner: [
+        {
+          id: 1,
+          re_date: date_now,
+          fullname: "",
+          dep: "",
+          travel: null,
+          recoder: ""
+        }
+      ],
       th: th,
       show: true,
       disabledDates: {},
@@ -1088,48 +1115,49 @@ export default {
     };
   },
   computed: {
-    noPartner(){
+    noPartner() {
       return this.person_partner.length === 1;
     }
   },
   methods: {
     onSubmit(evt) {
-      if(this.travel_type == null){
-        this.$swal('Warning !', 'กรุณาเลือกการเดินทาง' , 'warning')
-      }else{
-        this.person_partner[0].fullname = this.userLogin[0].fname+" "+this.userLogin[0].lname;
+      if (this.travel_type == null) {
+        this.$swal("Warning !", "กรุณาเลือกการเดินทาง", "warning");
+      } else {
+        this.person_partner[0].fullname =
+          this.userLogin[0].fname + " " + this.userLogin[0].lname;
         this.person_partner[0].dep = this.depart;
         this.person_partner[0].travel = this.travel_type.travel_name;
-        this.person_partner[0].recoder = this.userLogin[0].idcard
-        this.form.cid_account = this.userLogin[0].idcard
-        this.form.cid_account_recoder = this.userLogin[0].idcard
-        this.form.start_date = this.formatdate(this.form.start_date)  
-        this.form.end_date = this.formatdate(this.form.end_date)  
-        this.form.start_travel = this.formatdate(this.form.start_travel)  
-        this.form.end_travel = this.formatdate(this.form.end_travel)  
-        this.form.book_owner_date = this.formatdate(this.form.book_owner_date)  
+        this.person_partner[0].recoder = this.userLogin[0].idcard;
+        this.form.cid_account = this.userLogin[0].idcard;
+        this.form.cid_account_recoder = this.userLogin[0].idcard;
+        this.form.start_date = this.formatdate(this.form.start_date);
+        this.form.end_date = this.formatdate(this.form.end_date);
+        this.form.start_travel = this.formatdate(this.form.start_travel);
+        this.form.end_travel = this.formatdate(this.form.end_travel);
+        this.form.book_owner_date = this.formatdate(this.form.book_owner_date);
         axios
-          .post(this.HOST+"/hrd/create",{
-              register: this.form,
-              register_partner: this.person_partner
+          .post(this.HOST + "/hrd/create", {
+            register: this.form,
+            register_partner: this.person_partner
           })
           .then(res => {
-            let data = res.data
+            let data = res.data;
             console.log(data);
 
-            if(data[0].status == 200){
+            if (data[0].status == 200) {
               this.$swal({
-                position: 'top-end',
-                type: 'success',
-                title: 'Your work has been saved.',
+                position: "top-end",
+                type: "success",
+                title: "Your work has been saved.",
                 showConfirmButton: false,
                 timer: 1500
-              })
-              this.$router.push('/services/register-all');
-            }else{
-              this.$swal('เกิดข้อผิดพลาด !!!', data[0].msg , 'error')
+              });
+              this.$router.push("/services/register-all");
+            } else {
+              this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
             }
-          }) 
+          })
           .catch(error => console.log("Error :", error));
       }
       evt.preventDefault();
@@ -1157,32 +1185,36 @@ export default {
       let date_now = `${day} ${thmonth[month]} ${year}`;
       return date_now;
     },
-    addPerson: function(){
-      if(this.partner_name != null && this.partner_dep != null && this.partner_travel != null){
+    addPerson: function() {
+      if (
+        this.partner_name != null &&
+        this.partner_dep != null &&
+        this.partner_travel != null
+      ) {
         var id_plus = this.person_partner.length + 1;
         this.person_partner.push({
-          id: id_plus, 
+          id: id_plus,
           re_date: date_now,
-          fullname: this.partner_name.fullname, 
-          dep: this.partner_dep.dep_code_name, 
-          travel: this.partner_travel.travel_name, 
-          recoder:this.userLogin[0].idcard
+          fullname: this.partner_name.fullname,
+          dep: this.partner_dep.dep_code_name,
+          travel: this.partner_travel.travel_name,
+          recoder: this.userLogin[0].idcard
         });
         //console.log(JSON.stringify(this.person_partner));
-        
-        this.partner_name = null
-        this.partner_dep = null
-        this.partner_travel = null
-      }else{
+
+        this.partner_name = null;
+        this.partner_dep = null;
+        this.partner_travel = null;
+      } else {
         console.log("No select data!!!");
       }
     },
     deletePerson(index) {
       this.person_partner.splice(index, 1);
     },
-    formatdate(dateTime){
-      let dateNew = this.moment(dateTime).format('YYYY-MM-DD')
-      return `${dateNew}`
+    formatdate(dateTime) {
+      let dateNew = this.moment(dateTime).format("YYYY-MM-DD");
+      return `${dateNew}`;
     }
   },
   mounted() {
@@ -1201,7 +1233,7 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-input[type=number]{
+input[type="number"] {
   text-align: center;
 }
 </style>

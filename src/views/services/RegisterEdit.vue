@@ -4,7 +4,9 @@
       <b-col sm="12">
         <b-card>
           <div slot="header" variant="dark">
-            <strong><i class="fa fa-edit"></i> แก้ไขข้อมูลขออนุมัติไปราชการ</strong>
+            <strong>
+              <i class="fa fa-edit"></i> แก้ไขข้อมูลขออนุมัติไปราชการ
+            </strong>
           </div>
           <b-form @submit.prevent="onSubmit" v-if="show">
             <b-card-body>
@@ -20,7 +22,7 @@
                       type="text"
                       id="re_date"
                       name="re_date"
-                      placeholder=""
+                      placeholder
                       :readonly="true"
                       v-model="form.re_date"
                     ></b-form-input>
@@ -71,7 +73,7 @@
                     label-for="partnerdepart"
                     :horizontal="true"
                   >
-                  <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
+                    <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="4">
@@ -81,7 +83,12 @@
                     label-for="travel_type"
                     :horizontal="true"
                   >
-                  <v-select v-model="travel_type" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>
+                    <v-select
+                      v-model="travel_type"
+                      placeholder="เลือกการเดินทาง"
+                      label="travel_name"
+                      :options="travel"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -93,7 +100,12 @@
                     label-for="partner"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_name" placeholder="เลือกรายชื่อ" label="fullname" :options="employee"></v-select>                    
+                    <v-select
+                      v-model="partner_name"
+                      placeholder="เลือกรายชื่อ"
+                      label="fullname"
+                      :options="employee"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="4">
@@ -103,7 +115,12 @@
                     label-for="department_partner"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_dep" placeholder="เลือกหน่วยงาน" label="dep_code_name" :options="department"></v-select>                    
+                    <v-select
+                      v-model="partner_dep"
+                      placeholder="เลือกหน่วยงาน"
+                      label="dep_code_name"
+                      :options="department"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="3">
@@ -113,13 +130,26 @@
                     label-for="travel_by"
                     :horizontal="true"
                   >
-                  <v-select v-model="partner_travel" placeholder="เลือกการเดินทาง" label="travel_name" :options="travel"></v-select>                    
+                    <v-select
+                      v-model="partner_travel"
+                      placeholder="เลือกการเดินทาง"
+                      label="travel_name"
+                      :options="travel"
+                    ></v-select>
                   </b-form-group>
                 </b-col>
                 <b-col sm="1">
                   <b-form-group>
-                    <b-button pressed block variant="primary" size="sm" aria-pressed="true" v-on:click="addPerson()" name="addPerson">
-                      <i class="fa fa-plus" aria-pressed="true" ></i> เพิ่ม
+                    <b-button
+                      pressed
+                      block
+                      variant="primary"
+                      size="sm"
+                      aria-pressed="true"
+                      v-on:click="addPerson()"
+                      name="addPerson"
+                    >
+                      <i class="fa fa-plus" aria-pressed="true"></i> เพิ่ม
                     </b-button>
                   </b-form-group>
                 </b-col>
@@ -130,12 +160,12 @@
                   <b-row>
                     <b-col sm="4">
                       <b-form-group
-                        label=""
+                        label
                         label-class="text-sm-right"
                         label-for="partnerlist"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.fullname"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.fullname"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="4">
@@ -145,7 +175,7 @@
                         label-for="partnerdepart"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.dep"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.dep"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="3">
@@ -155,20 +185,34 @@
                         label-for="travel_type"
                         :horizontal="true"
                       >
-                      <b-form-input type="text" :disabled="true" :value="person.travel"></b-form-input>
+                        <b-form-input type="text" :disabled="true" :value="person.travel"></b-form-input>
                       </b-form-group>
                     </b-col>
                     <b-col sm="1">
                       <b-form-group>
-                        <b-button v-if="person.cid === ''" variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePerson(key)">
-                          <i class="fa fa-trash" aria-pressed="true" ></i>
+                        <b-button
+                          v-if="person.cid === ''"
+                          variant="danger"
+                          size="sm"
+                          aria-pressed="true"
+                          name="deletePerson"
+                          v-on:click="deletePerson(key)"
+                        >
+                          <i class="fa fa-trash" aria-pressed="true"></i>
                         </b-button>
-                        <b-button v-else variant="danger" size="sm" aria-pressed="true" name="deletePerson" v-on:click="deletePersonOld(key, person.cid, person.re_id)">
-                          <i class="fa fa-trash" aria-pressed="true" ></i>
+                        <b-button
+                          v-else
+                          variant="danger"
+                          size="sm"
+                          aria-pressed="true"
+                          name="deletePerson"
+                          v-on:click="deletePersonOld(key, person.cid, person.re_id)"
+                        >
+                          <i class="fa fa-trash" aria-pressed="true"></i>
                         </b-button>
                       </b-form-group>
                     </b-col>
-                  </b-row>              
+                  </b-row>
                 </div>
               </div>
 
@@ -186,11 +230,16 @@
                     label-for="register-book-hos-id"
                     :horizontal="true"
                   >
-                    <b-form-input v-model="form.book_hos_id" type="text" id="book_hos_id" name="book_hos_id"></b-form-input>
+                    <b-form-input
+                      v-model="form.book_hos_id"
+                      type="text"
+                      id="book_hos_id"
+                      name="book_hos_id"
+                    ></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="2">
-                  <b-form-group  :horizontal="true">
+                  <b-form-group :horizontal="true">
                     <b-form-select v-model="form.book_hos_year">
                       <option :value="null" selected disabled>ปี พ.ศ.</option>
                       <option
@@ -256,7 +305,6 @@
                     :label-cols="2"
                     label-for="book_owner"
                     :horizontal="true"
-                    
                   >
                     <b-form-input
                       type="text"
@@ -341,7 +389,7 @@
                       name="meeting_type"
                       :required="true"
                     >
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_type, key) in meetingType"
                         v-bind:key="key"
@@ -371,7 +419,7 @@
                         v-model="form.start_date"
                         name="start_date"
                         :required="true"
-                      ></datepicker> &nbsp;ถึง&nbsp;
+                      ></datepicker>&nbsp;ถึง&nbsp;
                       <datepicker
                         placeholder="เลือกวันที่"
                         :bootstrap-styling="true"
@@ -380,7 +428,6 @@
                         name="end_date"
                         :required="true"
                       ></datepicker>
-                      
                     </b-input-group>
                     <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
                   </b-form-group>
@@ -414,7 +461,7 @@
                     :horizontal="true"
                   >
                     <b-form-select v-model="form.meeting_place_type" :required="true">
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option :value="1">ในเขตจังหวัด</option>
                       <option :value="2">นอกเขตจังหวัด</option>
                     </b-form-select>
@@ -487,7 +534,7 @@
                     :horizontal="true"
                   >
                     <b-form-select v-model="form.strategy" :required="true">
-                      <option value="" disabled>เลือกประเด็นยุทธศาสตร์</option>
+                      <option value disabled>เลือกประเด็นยุทธศาสตร์</option>
                       <option
                         v-for="(str,key) in meetingStrategy"
                         v-bind:key="key"
@@ -505,8 +552,13 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.meeting_is" id="meeting_is" name="meeting_is" :required="true">
-                      <option value="" disabled>เลือกประเภทการประชุม</option>
+                    <b-form-select
+                      v-model="form.meeting_is"
+                      id="meeting_is"
+                      name="meeting_is"
+                      :required="true"
+                    >
+                      <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
                         v-bind:key="key"
@@ -526,8 +578,13 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select v-model="form.budget_type" id="budget_type" name="budget_type" :required="true">
-                      <option value="" disabled>เลือกประเภทงบประมาณจัดสรร</option>
+                    <b-form-select
+                      v-model="form.budget_type"
+                      id="budget_type"
+                      name="budget_type"
+                      :required="true"
+                    >
+                      <option value disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
                         v-bind:key="key"
@@ -989,22 +1046,38 @@ import MeetingBudget from "./data/MeetingBudget";
 const toTwoDigits = num => (num < 10 ? "0" + num : num);
 let today = new Date();
 let year = today.getFullYear();
-let year_TH = parseInt(today.getFullYear())+543;
+let year_TH = parseInt(today.getFullYear()) + 543;
 let month = toTwoDigits(today.getMonth() + 1);
 let day = toTwoDigits(today.getDate());
 let ToDay = today.getDate();
 let date_now = `${year}-${month}-${day}`;
 let thmonth = {
-  "Jan": "มกราคม", "Feb": "กุมภาพันธ์","Mar": "มีนาคม",
-  "Apr": "เมษายน","May": "พฤษภาคม","Jun": "มิถุนายน",
-  "Jul": "กรกฎาคม","Aug": "สิงหาคม","sep": "กันยายน",
-  "Oct": "ตุลาคม","Nov": "พฤศจิกายน","Dec": "ธันวาคม"
+  Jan: "มกราคม",
+  Feb: "กุมภาพันธ์",
+  Mar: "มีนาคม",
+  Apr: "เมษายน",
+  May: "พฤษภาคม",
+  Jun: "มิถุนายน",
+  Jul: "กรกฎาคม",
+  Aug: "สิงหาคม",
+  sep: "กันยายน",
+  Oct: "ตุลาคม",
+  Nov: "พฤศจิกายน",
+  Dec: "ธันวาคม"
 };
 let monthEN = {
-  "Jan": "01", "Feb": "02","Mar": "03",
-  "Apr": "04","May": "05","Jun": "06",
-  "Jul": "07","Aug": "08","sep": "09",
-  "Oct": "10","Nov": "11","Dec": "12"
+  Jan: "01",
+  Feb: "02",
+  Mar: "03",
+  Apr: "04",
+  May: "05",
+  Jun: "06",
+  Jul: "07",
+  Aug: "08",
+  sep: "09",
+  Oct: "10",
+  Nov: "11",
+  Dec: "12"
 };
 export default {
   name: "register-edit",
@@ -1016,23 +1089,23 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem('user-login')),
-      dataRegis: JSON.parse(window.localStorage.getItem('meeting_register')),
+      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
+      dataRegis: JSON.parse(window.localStorage.getItem("meeting_register")),
       dataUpdate: JSON.parse(window.localStorage.getItem("update")),
       full_name: "",
       depart: "",
       travel_type: "",
-      department: JSON.parse(window.localStorage.getItem('department')),
-      employee: JSON.parse(window.localStorage.getItem('rehuser')),
+      department: JSON.parse(window.localStorage.getItem("department")),
+      employee: JSON.parse(window.localStorage.getItem("rehuser")),
       travel: MeetingTravel,
       meetingType: MeetingType,
       meetingIs: MeetingIs,
       meetingStrategy: MeetingStrategy,
       meetingBudget: MeetingBudget,
-      arrayYear:[
-        {year:year_TH-1},
-        {year:year_TH},
-        {year:year_TH+1},
+      arrayYear: [
+        { year: year_TH - 1 },
+        { year: year_TH },
+        { year: year_TH + 1 }
       ],
       selected: null,
       form: {
@@ -1079,15 +1152,17 @@ export default {
         expense_other: 0,
         expense_total: 0,
         cid_account: "",
-        re_id: "",
+        re_id: ""
       },
       partner_name: null,
       partner_dep: null,
       partner_travel: null,
       person_partner: [],
-      travel_chagne: [{
-        travel_name : null
-      }],
+      travel_chagne: [
+        {
+          travel_name: null
+        }
+      ],
       th: th,
       show: true,
       disabledDates: {},
@@ -1119,175 +1194,205 @@ export default {
       highlighted: {}
     };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
-    formatDateTH(DateTH){
+    formatDateTH(DateTH) {
       let strDate = DateTH.split(",");
-      let strTrim = strDate[1].trim()
+      let strTrim = strDate[1].trim();
       let subSpace = strTrim.split(" ");
-      let yearTH = parseInt(subSpace[2])+543
-      let strDateNew = subSpace[0]+" "+thmonth[subSpace[1]]+" "+yearTH
-      return `${strDateNew}`
+      let yearTH = parseInt(subSpace[2]) + 543;
+      let strDateNew = subSpace[0] + " " + thmonth[subSpace[1]] + " " + yearTH;
+      return `${strDateNew}`;
     },
-    formatDateEN(DateTH){
+    formatDateEN(DateTH) {
       let strDate = DateTH.split(",");
-      let strTrim = strDate[1].trim()
+      let strTrim = strDate[1].trim();
       let subSpace = strTrim.split(" ");
-      let strDateNew = subSpace[2]+"-"+monthEN[subSpace[1]]+"-"+subSpace[0]
-      return `${strDateNew}`
+      let strDateNew =
+        subSpace[2] + "-" + monthEN[subSpace[1]] + "-" + subSpace[0];
+      return `${strDateNew}`;
     },
-    setData(){
+    setData() {
       // alert(this.dataRegis[0].book_hos_year)
-        this.travel_type = this.dataRegis[0].travel_name
-        this.form.re_date = (this.dataRegis[0].re_date != null)?this.formatDateTH(this.dataRegis[0].re_date):""
-        this.form.phone = this.dataRegis[0].phone
-        this.form.meeting_type = this.dataRegis[0].meeting_type
-        this.form.meeting_story = this.dataRegis[0].meeting_story
-        this.form.start_date = (this.dataRegis[0].start_date != null)? this.formatDateEN(this.dataRegis[0].start_date): ""
-        this.form.end_date = (this.dataRegis[0].end_date != null)? this.formatDateEN(this.dataRegis[0].end_date): ""
-        this.form.meeting_place = this.dataRegis[0].meeting_place
-        this.form.meeting_place_type = this.dataRegis[0].meeting_place_type
-        this.form.meeting_host = this.dataRegis[0].meeting_host
-        this.form.start_travel = (this.dataRegis[0].start_travel != null)?this.formatDateEN(this.dataRegis[0].start_travel):""
-        this.form.end_travel = (this.dataRegis[0].end_travel != null)?this.formatDateEN(this.dataRegis[0].end_travel):""
-        this.form.strategy = this.dataRegis[0].strategy
-        this.form.meeting_is = this.dataRegis[0].meeting_is
-        this.form.meeting_owner = this.dataRegis[0].meeting_owner
-        this.form.book_owner = this.dataRegis[0].book_owner
-        this.form.book_owner_date = (this.dataRegis[0].book_owner_date != null)?this.formatDateEN(this.dataRegis[0].book_owner_date):""
-        this.form.book_hos_id = this.dataRegis[0].book_hos_id
-        this.form.book_hos_year = (this.dataRegis[0].book_hos_year != "ปี พ.ศ.")?this.dataRegis[0].book_hos_year:null
-        this.form.budget_type = this.dataRegis[0].budget_type
-        this.form.budget_other = this.dataRegis[0].budget_other
-        this.form.travel_government_car = this.dataRegis[0].travel_government_car
-        this.form.travel_bus = this.dataRegis[0].travel_bus
-        this.form.expense_bus = this.dataRegis[0].expense_bus
-        this.form.travel_fuel = this.dataRegis[0].travel_fuel
-        this.form.expense_fuel = this.dataRegis[0].expense_fuel
-        this.form.travel_airplane = this.dataRegis[0].travel_airplane
-        this.form.expense_airplane = this.dataRegis[0].expense_airplane
-        this.form.travel_owncar = this.dataRegis[0].travel_owncar
-        this.form.register_owncar = this.dataRegis[0].register_owncar
-        this.form.expense_owncar = this.dataRegis[0].expense_owncar
-        this.form.distance = this.dataRegis[0].distance
-        this.form.residence = this.dataRegis[0].residence
-        this.form.residence_num = this.dataRegis[0].residence_num
-        this.form.expense_residence = this.dataRegis[0].expense_residence
-        this.form.register_meeting = this.dataRegis[0].register_meeting
-        this.form.expense_register_meeting = this.dataRegis[0].expense_register_meeting
-        this.form.allowance = this.dataRegis[0].allowance
-        this.form.expense_allowance = this.dataRegis[0].expense_allowance
-        this.form.others = this.dataRegis[0].others
-        this.form.others_detail = this.dataRegis[0].others_detail
-        this.form.expense_other = this.dataRegis[0].expense_other
-        this.form.expense_total = this.dataRegis[0].expense_total
-        this.form.cid_account = this.dataRegis[0].cid_account
-        this.form.re_id = this.dataRegis[0].re_id
+      this.travel_type = this.dataRegis[0].travel_name;
+      this.form.re_date =
+        this.dataRegis[0].re_date != null
+          ? this.formatDateTH(this.dataRegis[0].re_date)
+          : "";
+      this.form.phone = this.dataRegis[0].phone;
+      this.form.meeting_type = this.dataRegis[0].meeting_type;
+      this.form.meeting_story = this.dataRegis[0].meeting_story;
+      this.form.start_date =
+        this.dataRegis[0].start_date != null
+          ? this.formatDateEN(this.dataRegis[0].start_date)
+          : "";
+      this.form.end_date =
+        this.dataRegis[0].end_date != null
+          ? this.formatDateEN(this.dataRegis[0].end_date)
+          : "";
+      this.form.meeting_place = this.dataRegis[0].meeting_place;
+      this.form.meeting_place_type = this.dataRegis[0].meeting_place_type;
+      this.form.meeting_host = this.dataRegis[0].meeting_host;
+      this.form.start_travel =
+        this.dataRegis[0].start_travel != null
+          ? this.formatDateEN(this.dataRegis[0].start_travel)
+          : "";
+      this.form.end_travel =
+        this.dataRegis[0].end_travel != null
+          ? this.formatDateEN(this.dataRegis[0].end_travel)
+          : "";
+      this.form.strategy = this.dataRegis[0].strategy;
+      this.form.meeting_is = this.dataRegis[0].meeting_is;
+      this.form.meeting_owner = this.dataRegis[0].meeting_owner;
+      this.form.book_owner = this.dataRegis[0].book_owner;
+      this.form.book_owner_date =
+        this.dataRegis[0].book_owner_date != null
+          ? this.formatDateEN(this.dataRegis[0].book_owner_date)
+          : "";
+      this.form.book_hos_id = this.dataRegis[0].book_hos_id;
+      this.form.book_hos_year =
+        this.dataRegis[0].book_hos_year != "ปี พ.ศ."
+          ? this.dataRegis[0].book_hos_year
+          : null;
+      this.form.budget_type = this.dataRegis[0].budget_type;
+      this.form.budget_other = this.dataRegis[0].budget_other;
+      this.form.travel_government_car = this.dataRegis[0].travel_government_car;
+      this.form.travel_bus = this.dataRegis[0].travel_bus;
+      this.form.expense_bus = this.dataRegis[0].expense_bus;
+      this.form.travel_fuel = this.dataRegis[0].travel_fuel;
+      this.form.expense_fuel = this.dataRegis[0].expense_fuel;
+      this.form.travel_airplane = this.dataRegis[0].travel_airplane;
+      this.form.expense_airplane = this.dataRegis[0].expense_airplane;
+      this.form.travel_owncar = this.dataRegis[0].travel_owncar;
+      this.form.register_owncar = this.dataRegis[0].register_owncar;
+      this.form.expense_owncar = this.dataRegis[0].expense_owncar;
+      this.form.distance = this.dataRegis[0].distance;
+      this.form.residence = this.dataRegis[0].residence;
+      this.form.residence_num = this.dataRegis[0].residence_num;
+      this.form.expense_residence = this.dataRegis[0].expense_residence;
+      this.form.register_meeting = this.dataRegis[0].register_meeting;
+      this.form.expense_register_meeting = this.dataRegis[0].expense_register_meeting;
+      this.form.allowance = this.dataRegis[0].allowance;
+      this.form.expense_allowance = this.dataRegis[0].expense_allowance;
+      this.form.others = this.dataRegis[0].others;
+      this.form.others_detail = this.dataRegis[0].others_detail;
+      this.form.expense_other = this.dataRegis[0].expense_other;
+      this.form.expense_total = this.dataRegis[0].expense_total;
+      this.form.cid_account = this.dataRegis[0].cid_account;
+      this.form.re_id = this.dataRegis[0].re_id;
     },
-    getPartner(cid, re_id){
-      let url = this.HOST+"/hrd/partner/"+cid+"/"+re_id
+    getPartner(cid, re_id) {
+      let url = this.HOST + "/hrd/partner/" + cid + "/" + re_id;
       axios
         .get(url)
         .then(res => {
-          let dataPartner = res.data
+          let dataPartner = res.data;
           console.log(dataPartner);
-          
-          for(var i=0;i<dataPartner.length;i++){
+
+          for (var i = 0; i < dataPartner.length; i++) {
             this.person_partner.push({
-              id: i+1,
+              id: i + 1,
               code_y: dataPartner[i].code_y,
               code_num: dataPartner[i].code_num,
               re_id: dataPartner[i].re_id,
-              re_date: (dataPartner[i].re_date != null)?this.formatDateEN(dataPartner[i].re_date):"", 
-              fullname: dataPartner[i].fullname, 
-              dep: dataPartner[i].dep_code_name, 
-              travel: dataPartner[i].travel_name, 
-              recoder:this.userLogin[0].idcard, 
-              cid: dataPartner[i].cid_account, 
+              re_date:
+                dataPartner[i].re_date != null
+                  ? this.formatDateEN(dataPartner[i].re_date)
+                  : "",
+              fullname: dataPartner[i].fullname,
+              dep: dataPartner[i].dep_code_name,
+              travel: dataPartner[i].travel_name,
+              recoder: this.userLogin[0].idcard,
+              cid: dataPartner[i].cid_account
             });
           }
           //console.log(res.data);
           console.log(this.person_partner);
-
         })
         .catch(error => console.log("Error", error));
     },
     onSubmit(evt) {
       //console.log(JSON.stringify(this.form));
-      this.travel_chagne[0].travel_name = this.travel_type.travel_name
+      this.travel_chagne[0].travel_name = this.travel_type.travel_name;
       console.log(JSON.stringify(this.travel_chagne));
       axios
-      .post(this.HOST+"/hrd/update",{
+        .post(this.HOST + "/hrd/update", {
           register: this.form,
           register_partner: this.person_partner,
-          travel_chagne : this.travel_chagne
-      })
-      .then(res => {
-        let data = res.data
-        console.log(data);
-        
-        if(data[0].status == 200){
-          this.$swal('Updated', 'You successfully updated this data', 'success')
-          setTimeout(() => {
-            this.$router.push('/services/register-all');
-          },1000);
-        }else{
-          this.$swal('เกิดข้อผิดพลาด !!!', data[0].msg , 'error')
-        }
-      }) 
-      .catch(error => console.log("Error :", error));
+          travel_chagne: this.travel_chagne
+        })
+        .then(res => {
+          let data = res.data;
+          console.log(data);
+
+          if (data[0].status == 200) {
+            this.$swal(
+              "Updated",
+              "You successfully updated this data",
+              "success"
+            );
+            setTimeout(() => {
+              this.$router.push("/services/register-all");
+            }, 1000);
+          } else {
+            this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
+          }
+        })
+        .catch(error => console.log("Error :", error));
       evt.preventDefault();
       //alert(JSON.stringify(this.form));
     },
-    addPerson: function(){
-      if(this.partner_name != null && this.partner_dep != null && this.partner_travel != null){
+    addPerson: function() {
+      if (
+        this.partner_name != null &&
+        this.partner_dep != null &&
+        this.partner_travel != null
+      ) {
         var id_plus = this.person_partner.length + 1;
         this.person_partner.push({
-          id: id_plus, 
-          re_id: this.dataRegis[0].re_id, 
+          id: id_plus,
+          re_id: this.dataRegis[0].re_id,
           re_date: date_now,
-          fullname: this.partner_name.fullname, 
-          dep: this.partner_dep.dep_code_name, 
-          travel: this.partner_travel.travel_name, 
-          recoder:this.userLogin[0].idcard,
-          cid:'',
+          fullname: this.partner_name.fullname,
+          dep: this.partner_dep.dep_code_name,
+          travel: this.partner_travel.travel_name,
+          recoder: this.userLogin[0].idcard,
+          cid: ""
         });
-        this.partner_name = null
-        this.partner_dep = null
-        this.partner_travel = null
-        
-      }else{
+        this.partner_name = null;
+        this.partner_dep = null;
+        this.partner_travel = null;
+      } else {
         console.log("No select data!!!");
       }
     },
     deletePerson(index) {
-       this.person_partner.splice(index, 1);
+      this.person_partner.splice(index, 1);
     },
-    deletePersonOld(index, cid, re_id){
+    deletePersonOld(index, cid, re_id) {
       axios
-        .delete(this.HOST+"/hrd/deletepartner/"+cid+"/"+re_id)
+        .delete(this.HOST + "/hrd/deletepartner/" + cid + "/" + re_id)
         .then(res => {
-          let data = res.data
-          if(data[0].status == 200){
+          let data = res.data;
+          if (data[0].status == 200) {
             this.$swal({
-              position: 'top-end',
-              type: 'success',
-              title: 'ลบข้อมูลเรียบร้อยแล้ว',
+              position: "top-end",
+              type: "success",
+              title: "ลบข้อมูลเรียบร้อยแล้ว",
               showConfirmButton: false,
               timer: 1500
-            })
+            });
             this.person_partner.splice(index, 1);
             // this.getPartner(this.dataUpdate[0].cid, this.dataUpdate[0].codeMaster);
-          }else{
+          } else {
             this.$swal({
-              position: 'top-end',
-              type: 'error',
-              title: 'เกิดข้อผิดพลาด !!!',
+              position: "top-end",
+              type: "error",
+              title: "เกิดข้อผิดพลาด !!!",
               text: data[0].msg
               // showConfirmButton: false,
               // timer: 1500
-            })
+            });
           }
         })
         .catch(error => console.log("Error", error));
@@ -1298,7 +1403,6 @@ export default {
     this.full_name = this.dataRegis[0].fullname;
     this.depart = this.dataRegis[0].dep_code_name;
     this.setData();
-    
   }
 };
 </script>
