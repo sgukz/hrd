@@ -1312,7 +1312,6 @@ export default {
         .catch(error => console.log("Error", error));
     },
     onSubmit(evt) {
-      //console.log(JSON.stringify(this.form));
       this.travel_chagne[0].travel_name = this.travel_type.travel_name;
       console.log(JSON.stringify(this.travel_chagne));
       axios

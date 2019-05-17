@@ -14,6 +14,7 @@ const ServicesRegisAll = () => import('@/views/services/RegisterAll');
 const ServicesAdminRegisAll = () => import('@/views/services/AdminRegisterAll');
 
 const Profiles = () => import('@/views/profile/Profiles');
+const department = () => import('@/views/department/Department');
 const Colors = () => import('@/views/theme/Colors');
 const Typography = () => import('@/views/theme/Typography');
 
@@ -125,6 +126,21 @@ export default new Router({
               path: 'profiles',
               name: 'ข้อมูลส่วนตัว',
               component: Profiles
+            }
+          ]
+        },
+        {
+          path: 'department',
+          redirect: '',
+          name: 'ข้อมูลหน่วยงาน',
+          component: {
+            render(c) { return c('router-view'); }
+          },
+          children: [
+            {
+              path: 'showall',
+              name: 'ข้อมูลหน่วยงานทั้งหมด',
+              component: department
             }
           ]
         },

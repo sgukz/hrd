@@ -49,4 +49,7 @@ $simple-line-font-path: "~simple-line-icons/fonts/";
 @import "assets/scss/style";
 // Import SED
 // @import 'assets/css/select2.min.css';
+.bold{
+  font-weight: bold;
+}
 </style>

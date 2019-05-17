@@ -22,11 +22,6 @@ export default {
           name: 'รายการทั้งหมด',
           url: '/services/register-all',
           icon: 'icon-list'
-        },
-        {
-          name: 'อัพเดทรายชื่อ',
-          url: '/users',
-          icon: 'icon-refresh',
         }
       ]
     },

@@ -22,11 +22,6 @@ export default {
           name: 'รายการทั้งหมด',
           url: '/services/register-all',
           icon: 'icon-list'
-        },
-        {
-          name: 'อัพเดทรายชื่อ',
-          url: '/users',
-          icon: 'icon-refresh',
         }
       ]
     },
@@ -44,6 +39,16 @@ export default {
       name: 'รายการทั้งหมด',
       url: '/services/admin-register-all',
       icon: 'icon-list'
+    },
+    {
+      name: 'จัดการข้อมูลหน่วยงาน',
+      url: '/department/showall',
+      icon: 'icon-list',
+    },
+    {
+      name: 'อัพเดทรายชื่อ',
+      url: '/users',
+      icon: 'icon-refresh',
     }
   ]
 };
