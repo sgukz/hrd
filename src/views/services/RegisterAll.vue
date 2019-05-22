@@ -213,7 +213,6 @@ export default {
         .then(res => {
           let data = res.data;
           this.items = data;
-          //console.log(this.items.length);
         })
         .catch(error => console.log("Error :", error));
       evt.preventDefault();
@@ -241,7 +240,6 @@ export default {
           setTimeout(() => {
             this.$router.push("/services/register-edit");
           }, 1000);
-          //console.log(JSON.parse(localStorage.getItem("meeting_register")));
         })
         .catch(error => console.log("Error", error));
     },

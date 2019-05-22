@@ -93,6 +93,68 @@
                 </b-col>
               </b-row>
               <b-row>
+                <b-col sm="2">
+                  <b-form-group description="กรณีเปลี่ยนคนไปราชการแทน">
+                    <b-button
+                      pressed
+                      block
+                      variant="success"
+                      size="sm"
+                      aria-pressed="true"
+                      name="addPerson"
+                      v-on:click="clickChange()"
+                      v-if="showChange"
+                    >
+                      <i class="fa fa-refresh" aria-pressed="true"></i> เปลี่ยน
+                    </b-button>
+                    <b-button
+                      pressed
+                      block
+                      variant="danger"
+                      size="sm"
+                      aria-pressed="true"
+                      name="addPerson"
+                      v-on:click="cancelChange()"
+                      v-else
+                    >
+                      <i class="fa fa-remove" aria-pressed="true"></i> ยกเลิก
+                    </b-button>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row v-if="!showChange">
+                <b-col sm="4">
+                  <b-form-group
+                    label="ชื่อ-สกุล"
+                    label-class="text-sm-right"
+                    label-for="partnerlist"
+                    :horizontal="true"
+                  >
+                    <v-select
+                      v-model="change_object"
+                      placeholder="เลือกชื่อ"
+                      label="fullname"
+                      :options="employee"
+                    ></v-select>
+                  </b-form-group>
+                </b-col>
+                <b-col sm="1">
+                  <b-form-group>
+                    <b-button
+                      pressed
+                      block
+                      variant="primary"
+                      size="sm"
+                      aria-pressed="true"
+                      v-on:click="saveChange()"
+                      name="addPerson"
+                    >
+                      <i class="fa fa-plus" aria-pressed="true"></i> เพิ่ม
+                    </b-button>
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
                 <b-col sm="4">
                   <b-form-group
                     label="พร้อมด้วย"
@@ -1155,6 +1217,7 @@ export default {
         re_id: ""
       },
       partner_name: null,
+      change_object: null,
       partner_dep: null,
       partner_travel: null,
       person_partner: [],
@@ -1191,7 +1254,8 @@ export default {
           }
         }
       },
-      highlighted: {}
+      highlighted: {},
+      showChange: true
     };
   },
   computed: {},
@@ -1212,8 +1276,11 @@ export default {
         subSpace[2] + "-" + monthEN[subSpace[1]] + "-" + subSpace[0];
       return `${strDateNew}`;
     },
+    formatdate(dateTime) {
+      let dateNew = this.moment(dateTime).format("YYYY-MM-DD");
+      return `${dateNew}`;
+    },
     setData() {
-      // alert(this.dataRegis[0].book_hos_year)
       this.travel_type = this.dataRegis[0].travel_name;
       this.form.re_date =
         this.dataRegis[0].re_date != null
@@ -1287,8 +1354,6 @@ export default {
         .get(url)
         .then(res => {
           let dataPartner = res.data;
-          console.log(dataPartner);
-
           for (var i = 0; i < dataPartner.length; i++) {
             this.person_partner.push({
               id: i + 1,
@@ -1306,14 +1371,15 @@ export default {
               cid: dataPartner[i].cid_account
             });
           }
-          //console.log(res.data);
-          console.log(this.person_partner);
         })
         .catch(error => console.log("Error", error));
     },
     onSubmit(evt) {
       this.travel_chagne[0].travel_name = this.travel_type.travel_name;
-      console.log(JSON.stringify(this.travel_chagne));
+      this.form.start_date = this.formatdate(this.form.start_date);
+      this.form.end_date = this.formatdate(this.form.end_date);
+      this.form.start_travel = this.formatdate(this.form.start_travel);
+      this.form.end_travel = this.formatdate(this.form.end_travel);
       axios
         .post(this.HOST + "/hrd/update", {
           register: this.form,
@@ -1322,8 +1388,6 @@ export default {
         })
         .then(res => {
           let data = res.data;
-          console.log(data);
-
           if (data[0].status == 200) {
             this.$swal(
               "Updated",
@@ -1339,7 +1403,6 @@ export default {
         })
         .catch(error => console.log("Error :", error));
       evt.preventDefault();
-      //alert(JSON.stringify(this.form));
     },
     addPerson: function() {
       if (
@@ -1382,7 +1445,6 @@ export default {
               timer: 1500
             });
             this.person_partner.splice(index, 1);
-            // this.getPartner(this.dataUpdate[0].cid, this.dataUpdate[0].codeMaster);
           } else {
             this.$swal({
               position: "top-end",
@@ -1395,6 +1457,44 @@ export default {
           }
         })
         .catch(error => console.log("Error", error));
+    },
+    clickChange() {
+      this.showChange = false;
+    },
+    cancelChange() {
+      this.showChange = true;
+    },
+    saveChange() {
+      let idcard = this.change_object.idcard;
+      let re_id = this.dataUpdate[0].re_id;
+      this.$swal({
+        title: "ต้องการเปลี่ยนคนไปราชการแทนหรือไม่ ?",
+        text: "ยืนยันการการเปลี่ยนไปราชการ",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "ยืนยัน",
+        cancelButtonText: "ยกเลิก",
+        showCloseButton: true
+      }).then(result => {
+        if (result.value) {
+          axios
+            .get(this.HOST + "/hrd/change/" + re_id + "/" + idcard)
+            .then(res => {
+              let data = res.data;
+              if (data[0].status == 200) {
+                this.$swal(
+                  "Updated",
+                  "You successfully updated this data",
+                  "success"
+                );
+                this.$router.push("/services/register-all");
+              } else {
+                this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
+              }
+            })
+            .catch(error => console.log(error));
+        }
+      });
     }
   },
   mounted() {

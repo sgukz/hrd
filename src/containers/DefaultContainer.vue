@@ -3,25 +3,21 @@
     <AppHeader fixed>
       <SidebarToggler class="d-lg-none" display="md" mobile/>
       <b-link class="navbar-brand" to="#">
-        <img class="navbar-brand-full" src="img/hrd.jpg" width="89" height="35" alt="CoreUI Logo">
+        <img class="navbar-brand-full" src="img/hrd.jpg" width="89" height="35">
         <img
           class="navbar-brand-minimized"
           src="img/hrd.jpg"
           width="30"
           height="30"
-          alt="CoreUI Logo"
         >
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg"/>
       <b-navbar-nav class="d-md-down-none">
-        <!-- <b-nav-item class="px-3" to="/dashboard">Dashboard</b-nav-item>
-        <b-nav-item class="px-3" to="/users" exact>Users</b-nav-item>-->
       </b-navbar-nav>
       <b-navbar-nav class="ml-auto">
         <DefaultHeaderDropdownAccnt/>
       </b-navbar-nav>
       <AsideToggler class="d-none d-lg-block"/>
-      <!--<AsideToggler class="d-lg-none" mobile />-->
     </AppHeader>
     <div class="app-body">
       <AppSidebar fixed>
@@ -45,8 +41,8 @@
     <TheFooter>
       <!--footer-->
       <div>
-        <a href="https://coreui.io">CoreUI</a>
-        <span class="ml-1">&copy; 2018 creativeLabs.</span>
+        <a href="https://coreui.io">ศูนย์คอมพิวเตอร์ โรงพยาบาลร้อยเอ็ด</a>
+        <span class="ml-1">&copy; 2019 Roi-Et Hospital</span>
       </div>
       <div class="ml-auto">
         <span class="mr-1">Powered by</span>
