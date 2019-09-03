@@ -58,7 +58,7 @@ import navadmin from '@/_navadmin'
 import { Header as AppHeader, SidebarToggler, Sidebar as AppSidebar, SidebarFooter, SidebarForm, SidebarHeader, SidebarMinimizer, SidebarNav, Aside as AppAside, AsideToggler, Footer as TheFooter, Breadcrumb } from '@coreui/vue'
 import DefaultAside from './DefaultAside'
 import DefaultHeaderDropdownAccnt from './DefaultHeaderDropdownAccnt'
-
+import decode from "jwt-decode";
 export default {
   name: 'DefaultContainer',
   components: {
@@ -95,8 +95,9 @@ export default {
   methods: {
     checkRole(){
       if (window.localStorage.getItem('user-login')){
-        this.userLogin = JSON.parse(window.localStorage.getItem('user-login'));
-        if(this.userLogin != null && this.userLogin[0].role == 5){
+        this.userLogin = window.localStorage.getItem("user-login");
+        let decoded = decode(this.userLogin);
+        if(this.userLogin != null && decoded.data[0].role == 5){
           this.nav = navadmin.items
         }else{
           this.nav = navuser.items

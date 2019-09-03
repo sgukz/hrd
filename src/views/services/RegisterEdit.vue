@@ -35,15 +35,7 @@
                     label-for="phone"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.phone"
-                      id="phone"
-                      name="phone"
-                      placeholder="08x-xxxxxxx"
-                      :required="true"
-                      autofocus
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.phone" :required="true" autofocus></b-form-input>
                   </b-form-group>
                   <!-- required -->
                 </b-col>
@@ -59,8 +51,6 @@
                     <b-form-input
                       type="text"
                       v-model="full_name"
-                      id="partnerlist[]"
-                      name="partnerlist[]"
                       placeholder="ชื่อ-สกุล"
                       :disabled="true"
                     ></b-form-input>
@@ -280,7 +270,7 @@
 
               <b-row>
                 <b-col sm="12">
-                  <b-progress height="{}" class="progress-xs my-3" variant="success" :value="100"/>
+                  <b-progress height="{}" class="progress-xs my-3" variant="success" :value="100" />
                 </b-col>
               </b-row>
 
@@ -322,7 +312,7 @@
                           id="no_id"
                           name="no_id"
                           value="1"
-                        >
+                        />
                         <label
                           class="custom-control-label"
                           for="no_id"
@@ -388,13 +378,7 @@
                     label-for="meeting_story"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.meeting_story"
-                      id="meeting_story"
-                      name="meeting_story"
-                      :required="true"
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.meeting_story" :required="true"></b-form-input>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -408,13 +392,7 @@
                     label-for="meeting_owner"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.meeting_owner"
-                      id="meeting_owner"
-                      name="meeting_owner"
-                      :required="true"
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.meeting_owner" :required="true"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
@@ -425,13 +403,7 @@
                     label-for="meeting_host"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.meeting_host"
-                      id="meeting_host"
-                      name="meeting_host"
-                      :required="true"
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.meeting_host" :required="true"></b-form-input>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -445,12 +417,7 @@
                     label-for="meeting_type"
                     :horizontal="true"
                   >
-                    <b-form-select
-                      v-model="form.meeting_type"
-                      id="meeting_type"
-                      name="meeting_type"
-                      :required="true"
-                    >
+                    <b-form-select v-model="form.meeting_type" :required="true">
                       <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_type, key) in meetingType"
@@ -505,13 +472,7 @@
                     label-for="meeting_place"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.meeting_place"
-                      id="meeting_place"
-                      name="meeting_place"
-                      :required="true"
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.meeting_place" :required="true"></b-form-input>
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
@@ -614,12 +575,7 @@
                     label-for="meeting_is"
                     :horizontal="true"
                   >
-                    <b-form-select
-                      v-model="form.meeting_is"
-                      id="meeting_is"
-                      name="meeting_is"
-                      :required="true"
-                    >
+                    <b-form-select v-model="form.meeting_is" :required="true">
                       <option value disabled>เลือกประเภทการประชุม</option>
                       <option
                         v-for="(m_is, key) in meetingIs"
@@ -640,12 +596,7 @@
                     label-for="budget_type"
                     :horizontal="true"
                   >
-                    <b-form-select
-                      v-model="form.budget_type"
-                      id="budget_type"
-                      name="budget_type"
-                      :required="true"
-                    >
+                    <b-form-select v-model="form.budget_type" :required="true">
                       <option value disabled>เลือกประเภทงบประมาณจัดสรร</option>
                       <option
                         v-for="(m_budget, key) in meetingBudget"
@@ -664,13 +615,7 @@
                     label-for="budget_other"
                     :horizontal="true"
                   >
-                    <b-form-input
-                      type="text"
-                      v-model="form.budget_other"
-                      id="budget_other"
-                      name="budget_other"
-                      placeholder
-                    ></b-form-input>
+                    <b-form-input type="text" v-model="form.budget_other" placeholder></b-form-input>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -688,10 +633,8 @@
                           type="checkbox"
                           v-model="form.travel_government_car"
                           class="custom-control-input"
-                          id="travel_government_car"
-                          name="travel_government_car"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="travel_government_car">รถยนต์ราชการ</label>
                       </div>
                     </b-form-checkbox-group>
@@ -710,7 +653,7 @@
                           id="travel_bus"
                           name="travel_bus"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="travel_bus">รถประจำทาง</label>
                       </div>
                     </b-form-checkbox-group>
@@ -749,7 +692,7 @@
                           id="travel_fuel"
                           name="travel_fuel"
                           value="1"
-                        >
+                        />
                         <label
                           class="custom-control-label"
                           for="travel_fuel"
@@ -791,7 +734,7 @@
                           id="travel_airplane"
                           name="travel_airplane"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="travel_airplane">เครื่องบิน</label>
                       </div>
                     </b-form-checkbox-group>
@@ -830,7 +773,7 @@
                           id="travel_owncar"
                           name="travel_owncar"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="travel_owncar">รถยนต์ส่วนตัว</label>
                       </div>
                     </b-form-checkbox-group>
@@ -906,7 +849,7 @@
                           id="residence"
                           name="residence"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="residence">ค่าที่พัก</label>
                       </div>
                     </b-form-checkbox-group>
@@ -963,7 +906,7 @@
                           id="register_meeting"
                           name="register_meeting"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="register_meeting">ค่าลงทะเบียน</label>
                       </div>
                     </b-form-checkbox-group>
@@ -1002,7 +945,7 @@
                           id="allowance"
                           name="allowance"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="allowance">ค่าเบี้ยเลี้ยง</label>
                       </div>
                     </b-form-checkbox-group>
@@ -1017,13 +960,7 @@
                     :horizontal="true"
                   >
                     <div class="col-sm-6">
-                      <b-form-input
-                        type="number"
-                        v-model="form.expense_allowance"
-                        id="expense_allowance"
-                        name="expense_allowance"
-                        placeholder
-                      ></b-form-input>
+                      <b-form-input type="number" v-model="form.expense_allowance" placeholder></b-form-input>
                     </div>
                   </b-form-group>
                 </b-col>
@@ -1041,7 +978,7 @@
                           id="others"
                           name="others"
                           value="1"
-                        >
+                        />
                         <label class="custom-control-label" for="others">อื่นๆ</label>
                       </div>
                     </b-form-checkbox-group>
@@ -1104,7 +1041,9 @@ import MeetingTravel from "./data/MeetingTravel";
 import MeetingIs from "./data/MeetingIs";
 import MeetingStrategy from "./data/MeetingStrategy";
 import MeetingBudget from "./data/MeetingBudget";
+import decode from "jwt-decode";
 
+let decoded = decode(window.localStorage.getItem("user-login"));
 const toTwoDigits = num => (num < 10 ? "0" + num : num);
 let today = new Date();
 let year = today.getFullYear();
@@ -1151,7 +1090,6 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
       dataRegis: JSON.parse(window.localStorage.getItem("meeting_register")),
       dataUpdate: JSON.parse(window.localStorage.getItem("update")),
       full_name: "",
@@ -1324,24 +1262,28 @@ export default {
       this.form.budget_type = this.dataRegis[0].budget_type;
       this.form.budget_other = this.dataRegis[0].budget_other;
       this.form.travel_government_car = this.dataRegis[0].travel_government_car;
-      this.form.travel_bus = this.dataRegis[0].travel_bus;
+      this.form.travel_bus = this.dataRegis[0].travel_bus == "1" ? true : false;
       this.form.expense_bus = this.dataRegis[0].expense_bus;
-      this.form.travel_fuel = this.dataRegis[0].travel_fuel;
+      this.form.travel_fuel =
+        this.dataRegis[0].travel_fuel == "1" ? true : false;
       this.form.expense_fuel = this.dataRegis[0].expense_fuel;
-      this.form.travel_airplane = this.dataRegis[0].travel_airplane;
+      this.form.travel_airplane =
+        this.dataRegis[0].travel_airplane == "1" ? true : false;
       this.form.expense_airplane = this.dataRegis[0].expense_airplane;
-      this.form.travel_owncar = this.dataRegis[0].travel_owncar;
+      this.form.travel_owncar =
+        this.dataRegis[0].travel_owncar == "1" ? true : false;
       this.form.register_owncar = this.dataRegis[0].register_owncar;
       this.form.expense_owncar = this.dataRegis[0].expense_owncar;
       this.form.distance = this.dataRegis[0].distance;
-      this.form.residence = this.dataRegis[0].residence;
+      this.form.residence = this.dataRegis[0].residence == "1" ? true : false;
       this.form.residence_num = this.dataRegis[0].residence_num;
       this.form.expense_residence = this.dataRegis[0].expense_residence;
-      this.form.register_meeting = this.dataRegis[0].register_meeting;
+      this.form.register_meeting =
+        this.dataRegis[0].register_meeting == "1" ? true : false;
       this.form.expense_register_meeting = this.dataRegis[0].expense_register_meeting;
-      this.form.allowance = this.dataRegis[0].allowance;
+      this.form.allowance = this.dataRegis[0].allowance == "1" ? true : false;
       this.form.expense_allowance = this.dataRegis[0].expense_allowance;
-      this.form.others = this.dataRegis[0].others;
+      this.form.others = this.dataRegis[0].others == "1" ? true : false;
       this.form.others_detail = this.dataRegis[0].others_detail;
       this.form.expense_other = this.dataRegis[0].expense_other;
       this.form.expense_total = this.dataRegis[0].expense_total;
@@ -1367,7 +1309,7 @@ export default {
               fullname: dataPartner[i].fullname,
               dep: dataPartner[i].dep_code_name,
               travel: dataPartner[i].travel_name,
-              recoder: this.userLogin[0].idcard,
+              recoder: decoded.data[0].idcard,
               cid: dataPartner[i].cid_account
             });
           }
@@ -1375,33 +1317,55 @@ export default {
         .catch(error => console.log("Error", error));
     },
     onSubmit(evt) {
-      this.travel_chagne[0].travel_name = this.travel_type.travel_name;
-      this.form.start_date = this.formatdate(this.form.start_date);
-      this.form.end_date = this.formatdate(this.form.end_date);
-      this.form.start_travel = this.formatdate(this.form.start_travel);
-      this.form.end_travel = this.formatdate(this.form.end_travel);
-      axios
-        .post(this.HOST + "/hrd/update", {
-          register: this.form,
-          register_partner: this.person_partner,
-          travel_chagne: this.travel_chagne
-        })
-        .then(res => {
-          let data = res.data;
-          if (data[0].status == 200) {
-            this.$swal(
-              "Updated",
-              "You successfully updated this data",
-              "success"
-            );
-            setTimeout(() => {
-              this.$router.push("/services/register-all");
-            }, 1000);
-          } else {
-            this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
-          }
-        })
-        .catch(error => console.log("Error :", error));
+      if (this.form.book_owner_date == "") {
+        this.$swal("Warning !", "กรุณาเลือกวันที่ลงหนังสือ", "warning");
+      } else if (this.form.start_date == "") {
+        this.$swal(
+          "Warning !",
+          "กรุณาเลือกวันที่เริ่มอบรม/ประชุม/สัมนา",
+          "warning"
+        );
+      } else if (this.form.end_date == "") {
+        this.$swal(
+          "Warning !",
+          "กรุณาเลือกวันที่สิ้นสุดอบรม/ประชุม/สัมนา",
+          "warning"
+        );
+      } else if (this.form.start_travel == "") {
+        this.$swal("Warning !", "กรุณาเลือกวันที่ออกเดินทาง", "warning");
+      } else if (this.form.end_travel == "") {
+        this.$swal("Warning !", "กรุณาเลือกวันที่เดินทางกลับ", "warning");
+      } else {
+        this.travel_chagne[0].travel_name = this.travel_type.travel_name;
+        this.form.start_date = this.formatdate(this.form.start_date);
+        this.form.end_date = this.formatdate(this.form.end_date);
+        this.form.start_travel = this.formatdate(this.form.start_travel);
+        this.form.end_travel = this.formatdate(this.form.end_travel);
+        axios
+          .post(this.HOST + "/hrd/update", {
+            register: this.form,
+            register_partner: this.person_partner,
+            travel_chagne: this.travel_chagne
+          })
+          .then(res => {
+            let data = res.data;
+            if (data[0].status == 200) {
+              this.$swal(
+                "Updated",
+                "You successfully updated this data",
+                "success"
+              );
+              setTimeout(() => {
+                this.$router.push("/services/register-all");
+              }, 1000);
+            } else if (data[0].status == 400) {
+              this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
+            } else {
+              console.log(data);
+            }
+          })
+          .catch(error => console.log("Error :", error));
+      }
       evt.preventDefault();
     },
     addPerson: function() {
@@ -1418,7 +1382,7 @@ export default {
           fullname: this.partner_name.fullname,
           dep: this.partner_dep.dep_code_name,
           travel: this.partner_travel.travel_name,
-          recoder: this.userLogin[0].idcard,
+          recoder: decoded.data[0].idcard,
           cid: ""
         });
         this.partner_name = null;

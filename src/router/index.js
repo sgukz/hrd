@@ -14,7 +14,12 @@ const ServicesRegisAll = () => import('@/views/services/RegisterAll');
 const ServicesAdminRegisAll = () => import('@/views/services/AdminRegisterAll');
 
 const Profiles = () => import('@/views/profile/Profiles');
+
 const department = () => import('@/views/department/Department');
+
+const report = () => import('@/views/reports/Report');
+
+
 const Colors = () => import('@/views/theme/Colors');
 const Typography = () => import('@/views/theme/Typography');
 
@@ -141,6 +146,21 @@ export default new Router({
               path: 'showall',
               name: 'ข้อมูลหน่วยงานทั้งหมด',
               component: department
+            }
+          ]
+        },
+        {
+          path: 'report',
+          redirect: '',
+          name: 'รายงานการขอไปราชการ',
+          component: {
+            render(c) { return c('router-view'); }
+          },
+          children: [
+            {
+              path: 'report-person',
+              name: 'รายงานการอบรม / ประชุม / สัมนารายบุคคล',
+              component: report
             }
           ]
         },

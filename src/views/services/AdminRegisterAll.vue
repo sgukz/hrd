@@ -55,13 +55,13 @@
                       </b-button>
                     </template>
                     <template slot="re_id" slot-scope="data">
-                      <a :href="'http://localhost:81/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a>
-                      <!-- <a
+                      <!-- <a :href="'http://localhost:81/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a> -->
+                      <a
                         :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id"
                         target="_BLANK"
                       >
                         <img src="img/document.png" alt>
-                      </a> -->
+                      </a>
                     </template>
                     <template slot="actions" slot-scope="data">
                       <span>
@@ -140,7 +140,7 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
+      // userLogin: JSON.parse(window.localStorage.getItem("user-login")),
       currentPage: 1,
       perPage: 10,
       totalRows: 0,

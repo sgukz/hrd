@@ -124,7 +124,7 @@ export default {
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
+      // userLogin: JSON.parse(window.localStorage.getItem("user-login")),
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
@@ -159,7 +159,7 @@ export default {
     },
     onSearch(evt) {
       axios
-        .post(this.HOST + "/department/search", {
+        .post(this.HOST + "/hrd/dep/search", {
           keyword: this.form
         })
         .then(res => {
@@ -171,7 +171,7 @@ export default {
     },
     onSave(evt) {
       axios
-        .post(this.HOST + "/department/create", {
+        .post(this.HOST + "/hrd/dep/create", {
           department: this.formEdit.depart
         })
         .then(res => {
@@ -197,7 +197,7 @@ export default {
     },
     onChange(evt){
       axios
-        .put(this.HOST + "/department/update", {
+        .put(this.HOST + "/hrd/dep/update", {
           depId: this.formEdit.departId,
           depName: this.formEdit.depart
         })
@@ -225,7 +225,7 @@ export default {
       this.showFormEdit = true
       this.show = false
       axios
-        .get(this.HOST + "/department/view/"+id)
+        .get(this.HOST + "/hrd/dep/view/"+id)
         .then(res => {
           let data = res.data;
           this.formEdit.depart = data[0].dep_code_name
@@ -246,7 +246,7 @@ export default {
       }).then(result => {
         if (result.value) {
           axios
-            .delete(this.HOST + "/department/delete/" + id)
+            .delete(this.HOST + "/hrd/dep/delete/" + id)
             .then(res => {
               let data = res.data;
               if (data[0].status == 200) {

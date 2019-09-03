@@ -19,6 +19,7 @@
 
 <script>
 import { HeaderDropdown as AppHeaderDropdown } from '@coreui/vue'
+import decode from "jwt-decode"
 export default {
   name: 'DefaultHeaderDropdownAccnt',
   components: {
@@ -26,8 +27,7 @@ export default {
   },
   data: () => {
     return { 
-      itemsCount: 42 ,
-      userLogin: JSON.parse(window.localStorage.getItem('user-login'))
+      userLogin: [],
     }
   },
   methods: {
@@ -37,7 +37,9 @@ export default {
     }
   },
   mounted() {
-    //console.log(this.userLogin);
+    let decoded = decode(window.localStorage.getItem('user-login'));
+    this.userLogin = decoded.data
+    // console.log(this.userLogin);
   }
 }
 </script>

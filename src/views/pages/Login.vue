@@ -7,7 +7,7 @@
             <b-card no-body class="p-4">
               <b-card-body>
                 <b-form @submit.prevent="login">
-                  <img src="img/HRD_Banner.jpg" width="100%" alt="logo reh">
+                  <img src="img/HRD_Banner.jpg" width="100%" alt="logo reh" />
                   <p class="text-muted">เข้าสู่ระบบขออนุมัติไปราชการ</p>
                   <b-input-group class="mb-3">
                     <b-input-group-prepend>
@@ -15,19 +15,28 @@
                         <i class="icon-user"></i>
                       </b-input-group-text>
                     </b-input-group-prepend>
-                    <b-form-input
+                    <input-mask
+                      class="form-control"
+                      v-bind:class="{ 'is-invalid': isInvalid }"
+                      placeholder="เลขบัตรประชาชน 13 หลัก"
+                      v-model="form.idcard"
+                      mask="9 9999 99999 99 9"
+                    />
+                    <!-- <input-mask
                       type="text"
                       class="form-control"
+                      v-bind:class="{ 'is-invalid': isInvalid }"
                       placeholder="เลขบัตรประชาชน 13 หลัก"
                       autocomplete="username"
                       :required="true"
                       v-model="form.idcard"
-                    />
+                      :maxlength="maxLength"
+                      @keyup="charCount()"
+                      mask="9-9999-99999-99-9"
+                    ></input-mask>-->
+                    <!-- @keypress="restrictChars($event)" -->
+                    <b-form-invalid-feedback>กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง</b-form-invalid-feedback>
                   </b-input-group>
-                  <!-- <b-input-group class="mb-4">
-                    <b-input-group-prepend><b-input-group-text><i class="icon-lock"></i></b-input-group-text></b-input-group-prepend>
-                    <b-form-input type="password" class="form-control" placeholder="รหัสผ่าน" autocomplete="current-password" :required="true" v-model="form.password" />
-                  </b-input-group>-->
                   <b-row>
                     <b-col cols="6">
                       <b-button type="submit" variant="primary" class="px-4">ล็อคอิน</b-button>
@@ -62,6 +71,7 @@ let day = toTwoDigits(today.getDate());
 let ToDay = today.getDate();
 let date_now = `${year}-${month}-${day}`;
 import axios from "axios";
+import decode from "jwt-decode";
 export default {
   name: "Login",
   data() {
@@ -69,41 +79,84 @@ export default {
       login_user: [],
       date_login: window.localStorage.getItem("date-login"),
       form: {
-        idcard: ""
-      }
+        idcard: "",
+        password: ""
+      },
+      maxLength: 13,
+      totalcharacter: 0,
+      isInvalid: false,
+      isValid: false
     };
   },
   methods: {
     login(evt) {
-      let url = this.HOST;
-      axios
-        .post(url + "/login/v1", {
-          auth: this.form
-        })
-        .then(res => {
-          let resp = res.data;
-          //console.log(resp);
-          if (resp.length > 0) {
-            if (resp[0].chkLog == 1) {
-              let parsed = JSON.stringify(res.data);
-              window.localStorage.setItem("user-login", parsed);
-              window.localStorage.setItem("date-login", date_now);
-              this.getDepartment();
-              this.getEmployee();
-              setTimeout(() => {
-                this.$router.push("/services/register-all");
-              }, 1000);
-            }
-          } else {
-            this.$swal(
-              "เข้าสู่ระบบไม่สำเร็จ",
-              "Username or Password Invalid.",
-              "error"
-            );
-          }
-        })
-        .catch(error => console.log("Error :", error));
-      evt.preventDefault();
+      let strIdcard = this.form.idcard.split(" ").join("");
+      this.form.idcard = strIdcard;
+      if (this.form.idcard === "") {
+        this.isInvalid = true;
+      } else {
+        if (this.form.idcard.split("_").join("").length === 13) {
+          let url = this.HOST;
+          //console.log(JSON.stringify(this.form));
+          axios
+            .post(url + "/login", {
+              auth: this.form
+            })
+            .then(res => {
+              let resp = res.data.token;
+              let decoded = decode(resp);
+
+              if (decoded.data.length > 0) {
+                if (decoded.data[0].chkLog == 1) {
+                  window.localStorage.setItem("user-login", resp);
+                  window.localStorage.setItem("date-login", date_now);
+                  this.getDepartment();
+                  this.getEmployee();
+                  setTimeout(() => {
+                    this.$router.push("/services/register-all");
+                  }, 1000);
+                } else {
+                //   this.$swal(
+                //     "เข้าสู่ระบบไม่สำเร็จ",
+                //     "Username or Password Invalid.",
+                //     "error"
+                //   );
+                  this.isInvalid = true;
+                }
+              } else {
+                // this.$swal(
+                //   "เข้าสู่ระบบไม่สำเร็จ",
+                //   "Username or Password Invalid.",
+                //   "error"
+                // );
+                this.isInvalid = true;
+              }
+            })
+            .catch(error => console.log("Error :", error));
+          evt.preventDefault();
+          this.isInvalid = false;
+        } else {
+          this.isInvalid = true;
+        }
+      }
+    },
+    restrictChars($event) {
+      if (
+        $event.charCode === 0 ||
+        /\d/.test(String.fromCharCode($event.charCode))
+      ) {
+        return true;
+      } else {
+        $event.preventDefault();
+      }
+    },
+    charCount() {
+      this.totalcharacter = this.form.idcard.length;
+      if (this.totalcharacter != 13) {
+        this.isInvalid = true;
+      } else {
+        this.isInvalid = false;
+      }
     },
     getDepartment() {
       axios
@@ -116,7 +169,7 @@ export default {
     },
     getEmployee() {
       axios
-        .get(this.HOST + "/users/rehuser")
+        .get(this.HOST + "/hrd/rehuser")
         .then(res => {
           let parsed = JSON.stringify(res.data);
           window.localStorage.setItem("rehuser", parsed);
@@ -126,16 +179,6 @@ export default {
   },
   mounted() {
     window.localStorage.clear();
-    // if (window.localStorage.getItem("user-login")) {
-    //   if (this.date_login != date_now) {
-
-    //     this.$router.push("/pages/login");
-    //   } else {
-    //     this.$router.push("/services/register-all");
-    //   }
-    // } else {
-    //   this.$router.push("/pages/login");
-    // }
   }
 };
 </script>

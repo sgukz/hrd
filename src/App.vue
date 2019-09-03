@@ -19,15 +19,17 @@ export default {
     };
   },
   mounted() {
-    if (window.localStorage.getItem("user-login")) {
-      if (this.date_login != date_now) {
-        this.$router.push("/pages/login");
-      } else {
-        this.$router.push("/services/register-all");
-      }
-    } else {
-      this.$router.push("/pages/login");
-    }
+    // if (window.localStorage.getItem("user-login")) {
+    //   if (this.date_login != date_now) {
+    //     this.$router.push("/pages/login");
+    //   } 
+    //   else {
+    //     this.$router.push("/services/register-all");
+    //   }
+    // } 
+    // else {
+    //   this.$router.push("/pages/login");
+    // }
   }
 };
 </script>

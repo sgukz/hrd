@@ -33,7 +33,11 @@
                     <h5>ไม่มีข้อมูลที่ค้นหา...!</h5>
                   </div>
                   <div v-if="formSearch.keyword != ''">
-                      <h6>คำที่คุณค้นหา - <b>'{{ formSearch.keyword }}'</b> - ผลลัพธ์ {{items.length}} รายการ</h6>
+                    <h6>
+                      คำที่คุณค้นหา -
+                      <b>'{{ formSearch.keyword }}'</b>
+                      - ผลลัพธ์ {{items.length}} รายการ
+                    </h6>
                   </div>
                   <div>
                     <b-table
@@ -56,13 +60,18 @@
                         </b-button>
                       </template>
                       <template slot="re_id" slot-scope="data">
-                        <a
+                        <!-- <a
                           :href="'http://localhost:81/printreport/main/printreport.php?re_id='+data.item.re_id"
                           target="_BLANK"
                         >
                           <img src="img/document.png" alt>
+                        </a>-->
+                        <a
+                          :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id"
+                          target="_BLANK"
+                        >
+                          <img src="img/document.png" alt />
                         </a>
-                        <!-- <a :href="'http://webapp2.intranet:88/printreport/main/printreport.php?re_id='+data.item.re_id" target="_BLANK"><img src="img/document.png" alt=""></a> -->
                       </template>
                       <template slot="actions" slot-scope="data">
                         <span v-if="data.item.cid_your==data.item.cid_partner">
@@ -72,7 +81,7 @@
                               <span class="sr-only">Search</span>
                             </template>
                             <b-dropdown-item
-                              v-on:click="editRegister(userLogin[0].idcard,data.item.re_id)"
+                              v-on:click="editRegister(data.item.cid_your,data.item.re_id)"
                             >
                               <i class="fa fa-edit"></i> แก้ไข
                             </b-dropdown-item>
@@ -104,6 +113,7 @@
 </template>
 <script>
 import axios from "axios";
+import decode from "jwt-decode";
 let thmonthShort = {
   "01": "ม.ค.",
   "02": "ก.พ.",
@@ -137,17 +147,17 @@ export default {
   props: {
     caption: {
       type: String,
-      default: "ข้อมูลขออนุมัตืไปราชการ"
+      default: "ข้อมูลขออนุมัติไปราชการ"
     }
   },
   data() {
     return {
-      userLogin: JSON.parse(window.localStorage.getItem("user-login")),
+      userLogin: window.localStorage.getItem("user-login"),
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
       formSearch: {
-        keyword: "",
+        keyword: ""
       },
       // Note 'isActive' is left out and will not appear in the rendered table
       fields: [
@@ -191,20 +201,27 @@ export default {
     };
   },
   methods: {
+    decoded() {
+      let decoded = decode(this.userLogin);
+      return decoded;
+    },
     loadData() {
-      let idcard = this.userLogin[0].idcard;
+      let idcard = this.decoded().data[0].idcard;
       axios
         .get(this.HOST + "/hrd/" + idcard)
         .then(res => {
           this.items = res.data;
-          localStorage.removeItem("update");
-          localStorage.removeItem("meeting_register");
-          localStorage.removeItem("meeting_register_partner");
+          //console.log(this.items);
+
+          window.localStorage.removeItem("update");
+          window.localStorage.removeItem("meeting_register");
+          window.localStorage.removeItem("meeting_register_partner");
         })
         .catch(error => console.log(error));
     },
     onSearch(evt) {
-      let idcard = this.userLogin[0].idcard;
+      // let decoded = decode(this.userLogin);
+      let idcard = this.decoded().data[0].idcard;
       axios
         .post(this.HOST + "/hrd/search", {
           keyword: this.formSearch.keyword,
