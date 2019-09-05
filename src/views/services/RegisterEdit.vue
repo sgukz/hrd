@@ -1043,7 +1043,6 @@ import MeetingStrategy from "./data/MeetingStrategy";
 import MeetingBudget from "./data/MeetingBudget";
 import decode from "jwt-decode";
 
-let decoded = decode(window.localStorage.getItem("user-login"));
 const toTwoDigits = num => (num < 10 ? "0" + num : num);
 let today = new Date();
 let year = today.getFullYear();
@@ -1061,7 +1060,7 @@ let thmonth = {
   Jun: "มิถุนายน",
   Jul: "กรกฎาคม",
   Aug: "สิงหาคม",
-  sep: "กันยายน",
+  Sep: "กันยายน",
   Oct: "ตุลาคม",
   Nov: "พฤศจิกายน",
   Dec: "ธันวาคม"
@@ -1075,7 +1074,7 @@ let monthEN = {
   Jun: "06",
   Jul: "07",
   Aug: "08",
-  sep: "09",
+  Sep: "09",
   Oct: "10",
   Nov: "11",
   Dec: "12"
@@ -1090,6 +1089,7 @@ export default {
   },
   data() {
     return {
+      userLogin: window.localStorage.getItem("user-login"),
       dataRegis: JSON.parse(window.localStorage.getItem("meeting_register")),
       dataUpdate: JSON.parse(window.localStorage.getItem("update")),
       full_name: "",
@@ -1198,6 +1198,10 @@ export default {
   },
   computed: {},
   methods: {
+    decoded() {
+      let decoded = decode(this.userLogin);
+      return decoded;
+    },
     formatDateTH(DateTH) {
       let strDate = DateTH.split(",");
       let strTrim = strDate[1].trim();
@@ -1309,7 +1313,7 @@ export default {
               fullname: dataPartner[i].fullname,
               dep: dataPartner[i].dep_code_name,
               travel: dataPartner[i].travel_name,
-              recoder: decoded.data[0].idcard,
+              recoder: this.decoded().data[0].idcard,
               cid: dataPartner[i].cid_account
             });
           }
@@ -1382,7 +1386,7 @@ export default {
           fullname: this.partner_name.fullname,
           dep: this.partner_dep.dep_code_name,
           travel: this.partner_travel.travel_name,
-          recoder: decoded.data[0].idcard,
+          recoder: this.decoded().data[0].idcard,
           cid: ""
         });
         this.partner_name = null;
@@ -1466,6 +1470,8 @@ export default {
     this.full_name = this.dataRegis[0].fullname;
     this.depart = this.dataRegis[0].dep_code_name;
     this.setData();
+    //console.log(this.dataRegis);
+    
   }
 };
 </script>

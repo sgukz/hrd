@@ -13,8 +13,8 @@ Vue.component("input-mask", InputMask);
 Vue.component("v-select", vSelect);
 Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue);
-//Vue.prototype.HOST = 'http://webapp2.intranet:8000/api/v1';
-Vue.prototype.HOST = "http://192.168.99.181:8000/api/v1";
+Vue.prototype.HOST = 'http://webapp2.intranet:8000/api/v1';
+//Vue.prototype.HOST = "http://192.168.99.181:8000/api/v1";
 Vue.prototype.moment = moment;
 /* eslint-disable no-new */
 new Vue({

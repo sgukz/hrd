@@ -903,7 +903,7 @@ let month = toTwoDigits(today.getMonth() + 1);
 let day = toTwoDigits(today.getDate());
 let ToDay = today.getDate();
 let date_now = `${year}-${month}-${day}`;
-let decoded = decode(window.localStorage.getItem("user-login"));
+//let decoded = decode(window.localStorage.getItem("user-login"));
 export default {
   name: "register-add",
   components: {
@@ -914,6 +914,7 @@ export default {
   },
   data() {
     return {
+      userLogin: window.localStorage.getItem("user-login"),
       full_name: "",
       depart: "",
       travel_type: null,
@@ -1014,6 +1015,10 @@ export default {
     }
   },
   methods: {
+    decoded() {
+      let decoded = decode(this.userLogin);
+      return decoded;
+    },
     onSubmit(evt) {
       if (this.travel_type == null) {
         this.$swal("Warning !", "กรุณาเลือกการเดินทาง", "warning");
@@ -1037,12 +1042,12 @@ export default {
         this.$swal("Warning !", "กรุณาเลือกวันที่เดินทางกลับ", "warning");
       } else {
         this.person_partner[0].fullname =
-          decoded.data[0].fname + " " + decoded.data[0].lname;
+          this.decoded().data[0].fname + " " + this.decoded().data[0].lname;
         this.person_partner[0].dep = this.depart;
         this.person_partner[0].travel = this.travel_type.travel_name;
-        this.person_partner[0].recoder = decoded.data[0].idcard;
-        this.form.cid_account = decoded.data[0].idcard;
-        this.form.cid_account_recoder = decoded.data[0].idcard;
+        this.person_partner[0].recoder = this.decoded().data[0].idcard;
+        this.form.cid_account = this.decoded().data[0].idcard;
+        this.form.cid_account_recoder = this.decoded().data[0].idcard;
         this.form.start_date = this.formatdate(this.form.start_date);
         this.form.end_date = this.formatdate(this.form.end_date);
         this.form.start_travel = this.formatdate(this.form.start_travel);
@@ -1113,7 +1118,7 @@ export default {
           fullname: this.partner_name.fullname,
           dep: this.partner_dep.dep_code_name,
           travel: this.partner_travel.travel_name,
-          recoder: decoded.data[0].idcard
+          recoder: this.decoded().data[0].idcard
         });
         //console.log(JSON.stringify(this.person_partner));
 
@@ -1133,8 +1138,8 @@ export default {
     }
   },
   mounted() {
-    this.full_name = decoded.data[0].fullname;
-    this.depart = decoded.data[0].dep_name;
+    this.full_name = this.decoded().data[0].fullname;
+    this.depart = this.decoded().data[0].dep_name;
   }
 };
 </script>
