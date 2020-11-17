@@ -69,7 +69,7 @@ const Register = () => import('@/views/pages/Register');
 
 // Users
 const Users = () => import('@/views/users/Users');
-const User = () => import('@/views/users/User');
+const UserManage = () => import('@/views/users/UserManage');
 
 Vue.use(Router);
 
@@ -206,10 +206,10 @@ export default new Router({
               component: Users,
             },
             {
-              path: ':id',
-              meta: { label: 'User Details'},
-              name: 'User',
-              component: User,
+              path: 'manage',
+              meta: { label: 'จัดการข้อมูลผู้ใช้งาน'},
+              name: 'UserManage',
+              component: UserManage,
             },
           ]
         },

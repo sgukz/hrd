@@ -1,0 +1,31 @@
+{
+    "items": [{
+            "degree_id": 1,
+            "degree_name": "ปฏิบัติงาน"
+        },
+        {
+            "degree_id": 2,
+            "degree_name": "ชำนาญงาน"
+        },
+        {
+            "degree_id": 3,
+            "degree_name": "ปฏิบัติการ"
+        },
+        {
+            "degree_id": 4,
+            "degree_name": "ชำนาญการ"
+        },
+        {
+            "degree_id": 5,
+            "degree_name": "ชำนาญการพิเศษ"
+        },
+        {
+            "degree_id": 6,
+            "degree_name": "เชี่ยวชาญ"
+        },
+        {
+            "degree_id": 7,
+            "degree_name": "ทรงคุณวุฒิ"
+        }
+    ]
+}

@@ -46,21 +46,26 @@ export default {
       icon: 'icon-list',
     },
     {
-      name: 'รายงาน',
-      url: '/report',
-      icon: 'icon-printer',
-      children: [
-        {
-          name: 'การอบรมรายบุคคล',
-          url: '/report/report-person',
-          icon: 'icon-book-open',
-        },
-      ]
-    },
-    {
-      name: 'อัพเดทรายชื่อ',
-      url: '/users',
-      icon: 'icon-refresh',
+      name: 'จัดการข้อมูลบุคลากร',
+      url: '/users/manage',
+      icon: 'icon-list',
     }
+    // {
+    //   name: 'รายงาน',
+    //   url: '/report',
+    //   icon: 'icon-printer',
+    //   children: [
+    //     {
+    //       name: 'การอบรมรายบุคคล',
+    //       url: '/report/report-person',
+    //       icon: 'icon-book-open',
+    //     },
+    //   ]
+    // },
+    // {
+    //   name: 'อัพเดทรายชื่อ',
+    //   url: '/users',
+    //   icon: 'icon-refresh',
+    // }
   ]
 };

@@ -22,24 +22,16 @@
                       v-model="form.idcard"
                       mask="9 9999 99999 99 9"
                     />
-                    <!-- <input-mask
-                      type="text"
-                      class="form-control"
-                      v-bind:class="{ 'is-invalid': isInvalid }"
-                      placeholder="เลขบัตรประชาชน 13 หลัก"
-                      autocomplete="username"
-                      :required="true"
-                      v-model="form.idcard"
-                      :maxlength="maxLength"
-                      @keyup="charCount()"
-                      mask="9-9999-99999-99-9"
-                    ></input-mask>-->
-                    <!-- @keypress="restrictChars($event)" -->
                     <b-form-invalid-feedback>กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง</b-form-invalid-feedback>
                   </b-input-group>
                   <b-row>
                     <b-col cols="6">
                       <b-button type="submit" variant="primary" class="px-4">ล็อคอิน</b-button>
+                    </b-col>
+                  </b-row>
+                  <b-row>
+                    <b-col cols="12" class="text-right">
+                      <p>version {{ this.VUE_APP_VERSION }}</p>
                     </b-col>
                   </b-row>
                 </b-form>
@@ -72,6 +64,9 @@ let ToDay = today.getDate();
 let date_now = `${year}-${month}-${day}`;
 import axios from "axios";
 import decode from "jwt-decode";
+
+// const pkgVersion = require('../../../package.json').version;
+
 export default {
   name: "Login",
   data() {
@@ -85,7 +80,8 @@ export default {
       maxLength: 13,
       totalcharacter: 0,
       isInvalid: false,
-      isValid: false
+      isValid: false,
+      VUE_APP_VERSION: ""
     };
   },
   methods: {
@@ -107,7 +103,7 @@ export default {
               let decoded = decode(resp);
 
               if (decoded.data.length > 0) {
-                if (decoded.data[0].chkLog == 1) {
+                if (decoded.data[0].chkLog > 0) {
                   window.localStorage.setItem("user-login", resp);
                   window.localStorage.setItem("date-login", date_now);
                   this.getDepartment();
@@ -178,6 +174,7 @@ export default {
     }
   },
   mounted() {
+    this.VUE_APP_VERSION = this.VERSION_APP
     window.localStorage.clear();
   }
 };

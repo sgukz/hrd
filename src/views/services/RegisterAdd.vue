@@ -1,888 +1,1074 @@
 <template>
-  <div class="animated fadeIn">
-    <b-row>
-      <b-col sm="12">
-        <b-card>
-          <div slot="header">
-            <strong>ขออนุมัติไปราชการ</strong>
-          </div>
-          <b-form @submit.prevent="onSubmit" v-if="show">
-            <b-card-body>
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group
-                    label="วันที่"
-                    label-class="text-sm-right"
-                    label-for="re_date"
-                    :horizontal="true"
-                  >
-                    <b-form-input
-                      type="text"
-                      id="re_date"
-                      name="re_date"
-                      placeholder
-                      :value="getDate()"
-                      :readonly="true"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group
-                    label="โทรศัพท์"
-                    label-class="text-sm-right"
-                    label-for="phone"
-                    :horizontal="true"
-                  >
-                    <b-form-input
-                      type="text"
-                      v-model="form.phone"
-                      id="phone"
-                      name="phone"
-                      placeholder
-                      autofocus
-                      :required="true"
-                    ></b-form-input>
-                    <!-- :required="true" -->
-                  </b-form-group>
-                  <!-- required -->
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group
-                    label="ชื่อ-สกุล"
-                    label-class="text-sm-right"
-                    label-for="partnerlist"
-                    :horizontal="true"
-                  >
-                    <b-form-input
-                      type="text"
-                      v-model="full_name"
-                      placeholder="ชื่อ-สกุล"
-                      :disabled="true"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group
-                    label="หน่วยงาน"
-                    label-class="text-sm-right"
-                    label-for="partnerdepart"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group
-                    label="เดินทางโดย"
-                    label-class="text-sm-right"
-                    label-for="travel_type"
-                    :horizontal="true"
-                  >
-                    <v-select
-                      v-model="travel_type"
-                      placeholder="เลือกการเดินทาง"
-                      label="travel_name"
-                      :options="travel"
-                      :required="true"
-                    ></v-select>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group
-                    label="พร้อมด้วย"
-                    label-class="text-sm-right"
-                    label-for="partner"
-                    :horizontal="true"
-                  >
-                    <v-select
-                      v-model="partner_name"
-                      placeholder="เลือกรายชื่อ"
-                      label="fullname"
-                      :options="employee"
-                    ></v-select>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group
-                    label="หน่วยงาน"
-                    label-class="text-sm-right"
-                    label-for="department_partner"
-                    :horizontal="true"
-                  >
-                    <v-select
-                      v-model="partner_dep"
-                      placeholder="เลือกหน่วยงาน"
-                      label="dep_code_name"
-                      :options="department"
-                    ></v-select>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group
-                    label="เดินทางโดย"
-                    label-class="text-sm-right"
-                    label-for="travel_by"
-                    :horizontal="true"
-                  >
-                    <v-select
-                      v-model="partner_travel"
-                      placeholder="เลือกการเดินทาง"
-                      label="travel_name"
-                      :options="travel"
-                    ></v-select>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="1">
-                  <b-form-group>
-                    <b-button
-                      pressed
-                      block
-                      variant="primary"
-                      size="sm"
-                      aria-pressed="true"
-                      v-on:click="addPerson()"
-                      name="addPerson"
-                    >
-                      <i class="fa fa-plus" aria-pressed="true"></i> เพิ่ม
-                    </b-button>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <p v-if="noPartner"></p>
-              <div v-for="(person, key) in person_partner" v-bind:key="key" v-else>
-                <div v-if="person.id != 1">
-                  <b-row>
-                    <b-col sm="4">
-                      <b-form-group
-                        label
-                        label-class="text-sm-right"
-                        label-for="partnerlist"
-                        :horizontal="true"
-                      >
-                        <b-form-input type="text" :disabled="true" :value="person.fullname"></b-form-input>
-                      </b-form-group>
-                    </b-col>
-                    <b-col sm="4">
-                      <b-form-group
-                        label="หน่วยงาน"
-                        label-class="text-sm-right"
-                        label-for="partnerdepart"
-                        :horizontal="true"
-                      >
-                        <b-form-input type="text" :disabled="true" :value="person.dep"></b-form-input>
-                      </b-form-group>
-                    </b-col>
-                    <b-col sm="3">
-                      <b-form-group
-                        label="เดินทางโดย"
-                        label-class="text-sm-right"
-                        label-for="travel_type"
-                        :horizontal="true"
-                      >
-                        <b-form-input type="text" :disabled="true" :value="person.travel"></b-form-input>
-                      </b-form-group>
-                    </b-col>
-                    <b-col sm="1">
-                      <b-form-group>
-                        <b-button
-                          variant="danger"
-                          size="sm"
-                          aria-pressed="true"
-                          name="deletePerson"
-                          v-on:click="deletePerson(key)"
-                        >
-                          <i class="fa fa-trash" aria-pressed="true"></i>
-                        </b-button>
-                      </b-form-group>
-                    </b-col>
-                  </b-row>
-                </div>
-              </div>
-
-              <b-row>
-                <b-col sm="12">
-                  <b-progress height="{}" class="progress-xs my-3" variant="success" :value="100" />
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group
-                    label="เลขที่รับ รพ ร้อยเอ็ด"
-                    label-class="text-sm-right"
-                    label-for="register-book-hos-id"
-                    :horizontal="true"
-                  >
-                    <b-form-input
-                      v-model="form.book_hos_id"
-                      type="text"
-                      id="book_hos_id"
-                      name="book_hos_id"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="2">
-                  <b-form-group :horizontal="true">
-                    <b-form-select v-model="form.book_hos_year">
-                      <option value selected disabled>ปี พ.ศ.</option>
-                      <option
-                        v-for="(year, key) in arrayYear"
-                        v-bind:key="key"
-                        :value="year.year"
-                      >{{year.year}}</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group :horizontal="true">
-                    <b-form-checkbox-group id="basicInlineCustomCheckboxes">
-                      <div class="custom-control custom-checkbox custom-control-inline">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="no_id"
-                          name="no_id"
-                          value="1"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="no_id"
-                        >ไม่มีเลขทะเบียนรับ รพ. (ไม่ผ่านธุรการกลาง)</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ลงวันที่"
-                    :label-cols="2"
-                    label-for="book_owner_date"
-                    :horizontal="true"
-                  >
-                    <b-input-group>
-                      <b-input-group-prepend>
-                        <b-input-group-text>
-                          <i class="fa fa-calendar"></i>
-                        </b-input-group-text>
-                      </b-input-group-prepend>
-                      <datepicker
-                        placeholder="เลือกวันที่"
-                        :bootstrap-styling="true"
-                        :language="th"
-                        v-model="form.book_owner_date"
-                        sm="6"
-                      ></datepicker>
-                    </b-input-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="หนังสือที่"
-                    :label-cols="2"
-                    label-for="book_owner"
-                    :horizontal="true"
-                  >
-                    <b-form-input
-                      type="text"
-                      v-model="form.book_owner"
-                      id="book_owner"
-                      name="book_owner"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เรื่อง"
-                    :label-cols="1"
-                    label-for="meeting_story"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" v-model="form.meeting_story" :required="true"></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ของ"
-                    :label-cols="2"
-                    label-for="meeting_owner"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" v-model="form.meeting_owner" :required="true"></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="หน่วยงานผู้จัด"
-                    :label-cols="2"
-                    label-for="meeting_host"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" v-model="form.meeting_host" :required="true"></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ประสงค์ที่จะเข้า"
-                    :label-cols="2"
-                    label-for="meeting_type"
-                    :horizontal="true"
-                  >
-                    <b-form-select v-model="form.meeting_type" :required="true">
-                      <option value disabled>เลือกประเภทการประชุม</option>
-                      <option
-                        v-for="(m_type, key) in meetingType"
-                        v-bind:key="key"
-                        :value="m_type.meeting_type_code"
-                      >{{m_type.meeting_type_name}}</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ระหว่างวันที่"
-                    :label-cols="2"
-                    label-for="meeting_date"
-                    :horizontal="true"
-                  >
-                    <b-input-group>
-                      <b-input-group-prepend>
-                        <b-input-group-text>
-                          <i class="fa fa-calendar"></i>
-                        </b-input-group-text>
-                      </b-input-group-prepend>
-                      <datepicker
-                        placeholder="เลือกวันที่"
-                        :bootstrap-styling="true"
-                        :language="th"
-                        v-model="form.start_date"
-                      ></datepicker>&nbsp;ถึง&nbsp;
-                      <datepicker
-                        placeholder="เลือกวันที่"
-                        :bootstrap-styling="true"
-                        :language="th"
-                        v-model="form.end_date"
-                      ></datepicker>
-                    </b-input-group>
-                    <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="สถานที่"
-                    :label-cols="2"
-                    label-for="meeting_place"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" v-model="form.meeting_place" :required="true"></b-form-input>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ประเภท"
-                    :label-cols="2"
-                    label-for="meeting_place_type"
-                    :horizontal="true"
-                  >
-                    <b-form-select v-model="form.meeting_place_type" :required="true">
-                      <option value disabled>เลือกประเภทการประชุม</option>
-                      <option :value="1">ในเขตจังหวัด</option>
-                      <option :value="2">นอกเขตจังหวัด</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ออกเดินทางวันที่"
-                    :label-cols="2"
-                    label-for="start_travel"
-                    :horizontal="true"
-                  >
-                    <b-input-group>
-                      <b-input-group-prepend>
-                        <b-input-group-text>
-                          <i class="fa fa-calendar"></i>
-                        </b-input-group-text>
-                      </b-input-group-prepend>
-                      <datepicker
-                        placeholder="เลือกวันที่"
-                        :bootstrap-styling="true"
-                        :language="th"
-                        v-model="form.start_travel"
-                      ></datepicker>
-                    </b-input-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="วันที่เดินทางกลับ"
-                    :label-cols="2"
-                    label-for="end_travel"
-                    :horizontal="true"
-                  >
-                    <b-input-group>
-                      <b-input-group-prepend>
-                        <b-input-group-text>
-                          <i class="fa fa-calendar"></i>
-                        </b-input-group-text>
-                      </b-input-group-prepend>
-                      <datepicker
-                        placeholder="เลือกวันที่"
-                        :bootstrap-styling="true"
-                        :language="th"
-                        v-model="form.end_travel"
-                      ></datepicker>
-                    </b-input-group>
-                    <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="ตอบสนองประเด็นยุทธศาสตร์"
-                    :label-cols="2"
-                    label-for="strategy"
-                    :horizontal="true"
-                  >
-                    <b-form-select v-model="form.strategy" id="strategy" name="strategy">
-                      <option value disabled>เลือกประเด็นยุทธศาสตร์</option>
-                      <option
-                        v-for="(str,key) in meetingStrategy"
-                        v-bind:key="key"
-                        :value="str.strategy_code"
-                      >{{str.strategy_name}}</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นการประชุม"
-                    :label-cols="2"
-                    label-for="meeting_is"
-                    :horizontal="true"
-                  >
-                    <b-form-select v-model="form.meeting_is" :required="true">
-                      <option value disabled>เลือกประเภทการประชุม</option>
-                      <option
-                        v-for="(m_is, key) in meetingIs"
-                        v-bind:key="key"
-                        :value="m_is.meeting_is_code"
-                      >{{m_is.meeting_is_name}}</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เบิกจากงบประมาณ"
-                    :label-cols="3"
-                    label-for="budget_type"
-                    :horizontal="true"
-                  >
-                    <b-form-select v-model="form.budget_type" :required="true">
-                      <option value disabled>เลือกประเภทงบประมาณจัดสรร</option>
-                      <option
-                        v-for="(m_budget, key) in meetingBudget"
-                        v-bind:key="key"
-                        :value="m_budget.budget_code"
-                      >{{m_budget.budget_name}}</option>
-                    </b-form-select>
-                  </b-form-group>
-                </b-col>
-
-                <b-col sm="8">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label
-                    :label-cols="1"
-                    label-for="budget_other"
-                    :horizontal="true"
-                  >
-                    <b-form-input type="text" v-model="form.budget_other" placeholder></b-form-input>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="12">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    :label-cols="1"
-                    label="ประเมินค่าใช้จ่าย"
-                    :horizontal="true"
-                  >
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.travel_government_car"
-                          class="custom-control-input"
-                          value="1"
-                          id="travel_government_car"
-                        />
-                        <label class="custom-control-label" for="travel_government_car">รถยนต์ราชการ</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group label-class="text-sm-right" :label-cols="2" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.travel_bus"
-                          class="custom-control-input"
-                          value="1"
-                          id="travel_bus"
-                        />
-                        <label class="custom-control-label" for="travel_bus">รถประจำทาง</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_bus"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_bus" placeholder></b-form-input>
+    <div class="animated fadeIn">
+        <b-row>
+            <b-col sm="12">
+                <b-card>
+                    <div slot="header">
+                        <strong>ขออนุมัติไปราชการ</strong>
                     </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                    <b-form @submit.prevent="onSubmit" v-if="show">
+                        <b-card-body>
+                            <b-row>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="วันที่"
+                                        label-class="text-sm-right"
+                                        label-for="re_date"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            id="re_date"
+                                            name="re_date"
+                                            placeholder
+                                            :value="getDate()"
+                                            :readonly="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="โทรศัพท์"
+                                        label-class="text-sm-right"
+                                        label-for="phone"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.phone"
+                                            id="phone"
+                                            name="phone"
+                                            placeholder
+                                            autofocus
+                                            :required="true"
+                                        ></b-form-input>
+                                        <!-- :required="true" -->
+                                    </b-form-group>
+                                    <!-- required -->
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="ชื่อ-สกุล"
+                                        label-class="text-sm-right"
+                                        label-for="partnerlist"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="full_name"
+                                            placeholder="ชื่อ-สกุล"
+                                            :disabled="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="หน่วยงาน"
+                                        label-class="text-sm-right"
+                                        label-for="partnerdepart"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input type="text" :disabled="true" v-model="depart"></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="เดินทางโดย"
+                                        label-class="text-sm-right"
+                                        label-for="travel_type"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select
+                                            v-model="person_partner[0].travel_type"
+                                            :required="true"
+                                        >
+                                            <option value disabled>เลือกการเดินทาง</option>
+                                            <option
+                                                v-for="(t_val, key) in travel"
+                                                v-bind:key="key"
+                                                :value="t_val.travel_id"
+                                            >{{t_val.travel_name}}</option>
+                                        </b-form-select>
+                                        <!-- <v-select
+                                            v-model="travel_type"
+                                            placeholder="เลือกการเดินทาง"
+                                            label="travel_name"
+                                            :options="travel"
+                                            :required="true"
+                                        ></v-select> -->
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="พร้อมด้วย"
+                                        label-class="text-sm-right"
+                                        label-for="partner"
+                                        :horizontal="true"
+                                    >
+                                        <v-select
+                                            v-model="partner_name"
+                                            placeholder="เลือกรายชื่อ"
+                                            label="fullname"
+                                            :options="employee"
+                                        ></v-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="หน่วยงาน"
+                                        label-class="text-sm-right"
+                                        label-for="department_partner"
+                                        :horizontal="true"
+                                    >
+                                        <v-select
+                                            v-model="partner_dep"
+                                            placeholder="เลือกหน่วยงาน"
+                                            label="dep_code_name"
+                                            :options="department"
+                                        ></v-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label="เดินทางโดย"
+                                        label-class="text-sm-right"
+                                        label-for="travel_by"
+                                        :horizontal="true"
+                                    >
+                                        <v-select
+                                            v-model="partner_travel"
+                                            placeholder="เลือกการเดินทาง"
+                                            label="travel_name"
+                                            :options="travel"
+                                        ></v-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="1">
+                                    <b-form-group>
+                                        <b-button
+                                            pressed
+                                            block
+                                            variant="primary"
+                                            size="sm"
+                                            aria-pressed="true"
+                                            v-on:click="addPerson()"
+                                            name="addPerson"
+                                        >
+                                            <i class="fa fa-plus" aria-pressed="true"></i> เพิ่ม
+                                        </b-button>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <p v-if="noPartner"></p>
+                            <div v-for="(person, key) in parnert_preview" v-bind:key="key" v-else>
+                                <div v-if="person.fullname != ''">
+                                    <b-row>
+                                        <b-col sm="4">
+                                            <b-form-group
+                                                label
+                                                label-class="text-sm-right"
+                                                label-for="partnerlist"
+                                                :horizontal="true"
+                                            >
+                                                <b-form-input
+                                                    type="text"
+                                                    :disabled="true"
+                                                    :value="person.fullname"
+                                                ></b-form-input>
+                                            </b-form-group>
+                                        </b-col>
+                                        <b-col sm="4">
+                                            <b-form-group
+                                                label="หน่วยงาน"
+                                                label-class="text-sm-right"
+                                                label-for="partnerdepart"
+                                                :horizontal="true"
+                                            >
+                                                <b-form-input
+                                                    type="text"
+                                                    :disabled="true"
+                                                    :value="person.department"
+                                                ></b-form-input>
+                                            </b-form-group>
+                                        </b-col>
+                                        <b-col sm="3">
+                                            <b-form-group
+                                                label="เดินทางโดย"
+                                                label-class="text-sm-right"
+                                                label-for="travel_type"
+                                                :horizontal="true"
+                                            >
+                                                <b-form-input
+                                                    type="text"
+                                                    :disabled="true"
+                                                    :value="person.travel_type"
+                                                ></b-form-input>
+                                            </b-form-group>
+                                        </b-col>
+                                        <b-col sm="1">
+                                            <b-form-group>
+                                                <b-button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    aria-pressed="true"
+                                                    name="deletePerson"
+                                                    v-on:click="deletePerson(key)"
+                                                >
+                                                    <i class="fa fa-trash" aria-pressed="true"></i>
+                                                </b-button>
+                                            </b-form-group>
+                                        </b-col>
+                                    </b-row>
+                                </div>
+                            </div>
 
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group label-class="text-sm-right" :label-cols="2" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.travel_fuel"
-                          class="custom-control-input"
-                          value="1"
-                          id="travel_fuel"
-                        />
-                        <label
-                          class="custom-control-label"
-                          for="travel_fuel"
-                        >ค่ายานพาหนะ/เชื้อเพลิง (แท็กซี่/รถโดยสาร)</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_fuel"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_fuel" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="12">
+                                    <b-progress
+                                        height="{}"
+                                        class="progress-xs my-3"
+                                        variant="success"
+                                        :value="100"
+                                    />
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group label-class="text-sm-right" :label-cols="2" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.travel_airplane"
-                          class="custom-control-input"
-                          value="1"
-                          id="travel_airplane"
-                        />
-                        <label class="custom-control-label" for="travel_airplane">เครื่องบิน</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_airplane"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_airplane" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label="เลขที่รับ รพ ร้อยเอ็ด"
+                                        label-class="text-sm-right"
+                                        label-for="register-book-hos-id"
+                                        :label-cols="3"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            v-model="form.book_hos_id"
+                                            type="text"
+                                            id="book_hos_id"
+                                            name="book_hos_id"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label="ปี พ.ศ."
+                                        label-class="text-sm-right"
+                                        :label-cols="4"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            v-model="form.book_hos_year"
+                                            type="text"
+                                            id="book_hos_year"
+                                            name="book_hos_year"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="3">
-                  <b-form-group label-class="text-sm-right" :label-cols="4" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.travel_owncar"
-                          class="custom-control-input"
-                          value="1"
-                          id="travel_owncar"
-                        />
-                        <label class="custom-control-label" for="travel_owncar">รถยนต์ส่วนตัว</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group
-                    label="ทะเบียน"
-                    :label-cols="4"
-                    label-for="register_owncar"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-12">
-                      <b-form-input type="text" v-model="form.register_owncar" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group
-                    label="ระยะทางไปกลับ (กม.)"
-                    :label-cols="4"
-                    label-for="distance"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-12">
-                      <b-form-input type="text" v-model="form.distance" sm placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="3"
-                    label-for="expense_owncar"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-12">
-                      <b-form-input type="number" v-model="form.expense_owncar" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ลงวันที่"
+                                        :label-cols="2"
+                                        label-for="book_owner_date"
+                                        :horizontal="true"
+                                    >
+                                        <b-input-group>
+                                            <b-input-group-prepend>
+                                                <b-input-group-text>
+                                                    <i class="fa fa-calendar"></i>
+                                                </b-input-group-text>
+                                            </b-input-group-prepend>
+                                            <datepicker
+                                                placeholder="เลือกวันที่"
+                                                :bootstrap-styling="true"
+                                                :language="th"
+                                                v-model="form.book_owner_date"
+                                            ></datepicker>
+                                        </b-input-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="หนังสือที่"
+                                        :label-cols="3"
+                                        label-for="book_owner"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.book_owner"
+                                            id="book_owner"
+                                            name="book_owner"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="3">
-                  <b-form-group label-class="text-sm-right" :label-cols="4" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.residence"
-                          class="custom-control-input"
-                          value="1"
-                          id="residence"
-                        />
-                        <label class="custom-control-label" for="residence">ค่าที่พัก</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group
-                    label="จำนวน (คืน)"
-                    :label-cols="4"
-                    label-for="residence_num"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-12">
-                      <b-form-input type="number" v-model="form.residence_num" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_residence"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_residence" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="12">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เรื่อง"
+                                        :label-cols="1"
+                                        label-for="meeting_story"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.meeting_story"
+                                            :required="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group label-class="text-sm-right" :label-cols="2" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.register_meeting"
-                          class="custom-control-input"
-                          value="1"
-                          id="register_meeting"
-                        />
-                        <label class="custom-control-label" for="register_meeting">ค่าลงทะเบียน</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_register_meeting"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input
-                        type="number"
-                        v-model="form.expense_register_meeting"
-                        placeholder
-                      ></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ของ"
+                                        :label-cols="2"
+                                        label-for="meeting_owner"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.meeting_owner"
+                                            :required="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="หน่วยงานผู้จัด"
+                                        :label-cols="2"
+                                        label-for="meeting_host"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.meeting_host"
+                                            :required="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="6">
-                  <b-form-group label-class="text-sm-right" :label-cols="2" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.allowance"
-                          class="custom-control-input"
-                          value="1"
-                          id="allowance"
-                        />
-                        <label class="custom-control-label" for="allowance">ค่าเบี้ยเลี้ยง</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_allowance"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_allowance" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ประสงค์ที่จะเข้า"
+                                        :label-cols="2"
+                                        label-for="meeting_type"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select v-model="form.meeting_type" :required="true">
+                                            <option value disabled>เลือกประเภทการประชุม</option>
+                                            <option
+                                                v-for="(m_type, key) in meetingType"
+                                                v-bind:key="key"
+                                                :value="m_type.meeting_type_code"
+                                            >{{m_type.meeting_type_name}}</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ระหว่างวันที่"
+                                        :label-cols="2"
+                                        label-for="meeting_date"
+                                        :horizontal="true"
+                                    >
+                                        <b-input-group>
+                                            <b-input-group-prepend>
+                                                <b-input-group-text>
+                                                    <i class="fa fa-calendar"></i>
+                                                </b-input-group-text>
+                                            </b-input-group-prepend>
+                                            <datepicker
+                                                placeholder="เลือกวันที่"
+                                                :bootstrap-styling="true"
+                                                :language="th"
+                                                v-model="form.start_date"
+                                            ></datepicker>&nbsp;ถึง&nbsp;
+                                            <datepicker
+                                                placeholder="เลือกวันที่"
+                                                :bootstrap-styling="true"
+                                                :language="th"
+                                                v-model="form.end_date"
+                                            ></datepicker>
+                                        </b-input-group>
+                                        <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
 
-              <b-row>
-                <b-col sm="2">
-                  <b-form-group label-class="text-sm-right" :label-cols="6" :horizontal="true">
-                    <b-form-checkbox-group id>
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          v-model="form.others"
-                          class="custom-control-input"
-                          value="1"
-                          id="others"
-                        />
-                        <label class="custom-control-label" for="others">อื่นๆ</label>
-                      </div>
-                    </b-form-checkbox-group>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group label-for="others_detail" :horizontal="true">
-                    <div class="col-sm-12">
-                      <b-form-input type="text" v-model="form.others_detail" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group
-                    label-class="text-sm-right"
-                    label="เป็นเงิน (บาท)"
-                    :label-cols="4"
-                    label-for="expense_other"
-                    :horizontal="true"
-                  >
-                    <div class="col-sm-6">
-                      <b-form-input type="number" v-model="form.expense_other" placeholder></b-form-input>
-                    </div>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-            </b-card-body>
-            <div slot="footer">
-              <b-button type="submit" size="sm" variant="primary">
-                <i class="fa fa-save"></i> บันทึก
-              </b-button>&nbsp;&nbsp;
-              <b-button type="reset" size="sm" variant="danger">
-                <i class="fa fa-ban"></i> ยกเลิก
-              </b-button>
-            </div>
-          </b-form>
-        </b-card>
-      </b-col>
-    </b-row>
-  </div>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="สถานที่"
+                                        :label-cols="2"
+                                        label-for="meeting_place"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.meeting_place"
+                                            :required="true"
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ประเภท"
+                                        :label-cols="2"
+                                        label-for="meeting_place_type"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select
+                                            v-model="form.meeting_place_type"
+                                            :required="true"
+                                        >
+                                            <option value disabled>เลือกประเภทการประชุม</option>
+                                            <option :value="1">ในเขตจังหวัด</option>
+                                            <option :value="2">นอกเขตจังหวัด</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ออกเดินทางวันที่"
+                                        :label-cols="2"
+                                        label-for="start_travel"
+                                        :horizontal="true"
+                                    >
+                                        <b-input-group>
+                                            <b-input-group-prepend>
+                                                <b-input-group-text>
+                                                    <i class="fa fa-calendar"></i>
+                                                </b-input-group-text>
+                                            </b-input-group-prepend>
+                                            <datepicker
+                                                placeholder="เลือกวันที่"
+                                                :bootstrap-styling="true"
+                                                :language="th"
+                                                v-model="form.start_travel"
+                                            ></datepicker>
+                                        </b-input-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="วันที่เดินทางกลับ"
+                                        :label-cols="2"
+                                        label-for="end_travel"
+                                        :horizontal="true"
+                                    >
+                                        <b-input-group>
+                                            <b-input-group-prepend>
+                                                <b-input-group-text>
+                                                    <i class="fa fa-calendar"></i>
+                                                </b-input-group-text>
+                                            </b-input-group-prepend>
+                                            <datepicker
+                                                placeholder="เลือกวันที่"
+                                                :bootstrap-styling="true"
+                                                :language="th"
+                                                v-model="form.end_travel"
+                                            ></datepicker>
+                                        </b-input-group>
+                                        <!-- <b-form-input type="text" id="meeting_date" name="meeting_date" placeholder></b-form-input> -->
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="ตอบสนองประเด็นยุทธศาสตร์"
+                                        :label-cols="2"
+                                        label-for="strategy"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select
+                                            v-model="form.strategy"
+                                            id="strategy"
+                                            name="strategy"
+                                        >
+                                            <option value disabled>เลือกประเด็นยุทธศาสตร์</option>
+                                            <option
+                                                v-for="(str,key) in meetingStrategy"
+                                                v-bind:key="key"
+                                                :value="str.strategy_code"
+                                            >{{str.strategy_name}}</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นการประชุม"
+                                        :label-cols="2"
+                                        label-for="meeting_is"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select
+                                            v-model="form.meeting_is"
+                                            v-on:change="meetingIsChange"
+                                            :required="true"
+                                        >
+                                            <option value disabled>เลือกประเภทการประชุม</option>
+                                            <option
+                                                v-for="(m_is, key) in meetingIs"
+                                                v-bind:key="key"
+                                                :value="m_is.meeting_is_code"
+                                            >{{m_is.meeting_is_name}}</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="วัตถุประสงค์เพื่อพัฒนา"
+                                        :label-cols="2"
+                                        label-for="meeting_plan_id"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select
+                                            v-model="form.meeting_plan_id"
+                                            :required="true"
+                                        >
+                                            <option value disabled>เลือกวัตถุประสงค์</option>
+                                            <option
+                                                v-for="(m_plan, key) in meetingPlan"
+                                                v-bind:key="key"
+                                                :value="m_plan.meeting_plan_id"
+                                            >{{m_plan.meeting_plan_name}}</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <p v-if="hidden"></p>
+                            <b-row v-else>
+                                <b-col xl="12">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="แผนพัฒนาบุคลากร"
+                                        :label-cols="1"
+                                        label-for="hrdplan_label"
+                                        :horizontal="true"
+                                    >
+                                        <v-select
+                                            v-model="form.hrdplan_id"
+                                            placeholder="เลือกแผนพัฒนาบุคลากร"
+                                            label="other_course"
+                                            :options="hrdplanOption"
+                                        ></v-select>
+                                    </b-form-group>
+                                    
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="4">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เบิกจากงบประมาณ"
+                                        :label-cols="3"
+                                        label-for="budget_type"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-select v-model="form.budget_type" :required="true">
+                                            <option value disabled>เลือกประเภทงบประมาณจัดสรร</option>
+                                            <option
+                                                v-for="(m_budget, key) in meetingBudget"
+                                                v-bind:key="key"
+                                                :value="m_budget.budget_code"
+                                            >{{m_budget.budget_name}}</option>
+                                        </b-form-select>
+                                    </b-form-group>
+                                </b-col>
+
+                                <b-col sm="8">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label
+                                        :label-cols="1"
+                                        label-for="budget_other"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-input
+                                            type="text"
+                                            v-model="form.budget_other"
+                                            placeholder
+                                        ></b-form-input>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="12">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="1"
+                                        label="ประเมินค่าใช้จ่าย"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.travel_government_car"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="travel_government_car"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="travel_government_car"
+                                                >รถยนต์ราชการ</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="2"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.travel_bus"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="travel_bus"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="travel_bus"
+                                                >รถประจำทาง</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_bus"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_bus"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="2"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.travel_fuel"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="travel_fuel"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="travel_fuel"
+                                                >ค่ายานพาหนะ/เชื้อเพลิง (แท็กซี่/รถโดยสาร)</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_fuel"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_fuel"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="2"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.travel_airplane"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="travel_airplane"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="travel_airplane"
+                                                >เครื่องบิน</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_airplane"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_airplane"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="4"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.travel_owncar"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="travel_owncar"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="travel_owncar"
+                                                >รถยนต์ส่วนตัว</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label="ทะเบียน"
+                                        :label-cols="4"
+                                        label-for="register_owncar"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-12">
+                                            <b-form-input
+                                                type="text"
+                                                v-model="form.register_owncar"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label="ระยะทางไปกลับ (กม.)"
+                                        :label-cols="4"
+                                        label-for="distance"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-12">
+                                            <b-form-input
+                                                type="text"
+                                                v-model="form.distance"
+                                                sm
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="3"
+                                        label-for="expense_owncar"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-12">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_owncar"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="4"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.residence"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="residence"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="residence"
+                                                >ค่าที่พัก</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="3">
+                                    <b-form-group
+                                        label="จำนวน (คืน)"
+                                        :label-cols="4"
+                                        label-for="residence_num"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-12">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.residence_num"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_residence"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_residence"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="2"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.register_meeting"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="register_meeting"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="register_meeting"
+                                                >ค่าลงทะเบียน</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_register_meeting"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_register_meeting"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="2"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.allowance"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="allowance"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="allowance"
+                                                >ค่าเบี้ยเลี้ยง</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_allowance"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_allowance"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+
+                            <b-row>
+                                <b-col sm="2">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        :label-cols="6"
+                                        :horizontal="true"
+                                    >
+                                        <b-form-checkbox-group id>
+                                            <div class="custom-control custom-checkbox">
+                                                <input
+                                                    type="checkbox"
+                                                    v-model="form.others"
+                                                    class="custom-control-input"
+                                                    value="1"
+                                                    id="others"
+                                                />
+                                                <label
+                                                    class="custom-control-label"
+                                                    for="others"
+                                                >อื่นๆ</label>
+                                            </div>
+                                        </b-form-checkbox-group>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="4">
+                                    <b-form-group label-for="others_detail" :horizontal="true">
+                                        <div class="col-sm-12">
+                                            <b-form-input
+                                                type="text"
+                                                v-model="form.others_detail"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                                <b-col sm="6">
+                                    <b-form-group
+                                        label-class="text-sm-right"
+                                        label="เป็นเงิน (บาท)"
+                                        :label-cols="4"
+                                        label-for="expense_other"
+                                        :horizontal="true"
+                                    >
+                                        <div class="col-sm-6">
+                                            <b-form-input
+                                                type="number"
+                                                v-model="form.expense_other"
+                                                placeholder
+                                            ></b-form-input>
+                                        </div>
+                                    </b-form-group>
+                                </b-col>
+                            </b-row>
+                        </b-card-body>
+                        <div slot="footer">
+                            <b-button type="submit" size="sm" variant="primary">
+                                <i class="fa fa-save"></i> บันทึก
+                            </b-button>&nbsp;&nbsp;
+                            <b-button type="reset" size="sm" variant="danger">
+                                <i class="fa fa-ban"></i> ยกเลิก
+                            </b-button>
+                        </div>
+                    </b-form>
+                </b-card>
+            </b-col>
+        </b-row>
+    </div>
 </template>
 <script>
 import axios from "axios";
@@ -905,255 +1091,335 @@ let ToDay = today.getDate();
 let date_now = `${year}-${month}-${day}`;
 //let decoded = decode(window.localStorage.getItem("user-login"));
 export default {
-  name: "register-add",
-  components: {
-    Datepicker
-  },
-  props: {
-    value: String
-  },
-  data() {
-    return {
-      userLogin: window.localStorage.getItem("user-login"),
-      full_name: "",
-      depart: "",
-      travel_type: null,
-      department: JSON.parse(window.localStorage.getItem("department")),
-      employee: JSON.parse(window.localStorage.getItem("rehuser")),
-      travel: MeetingTravel,
-      meetingType: MeetingType,
-      meetingIs: MeetingIs,
-      meetingStrategy: MeetingStrategy,
-      meetingBudget: MeetingBudget,
-      arrayYear: [
-        { year: year_TH - 1 },
-        { year: year_TH },
-        { year: year_TH + 1 }
-      ],
-      selected: null,
-      form: {
-        re_date: date_now,
-        phone: "",
-        meeting_type: "",
-        meeting_story: "",
-        start_date: "",
-        end_date: "",
-        meeting_place: "",
-        meeting_place_type: "",
-        meeting_host: "",
-        start_travel: "",
-        end_travel: "",
-        strategy: "",
-        meeting_is: "",
-        meeting_owner: "",
-        book_owner: "",
-        book_owner_date: "",
-        book_hos_id: "",
-        book_hos_year: "",
-        budget_type: "",
-        budget_other: "",
-        travel_government_car: "",
-        travel_bus: "",
-        expense_bus: 0,
-        travel_fuel: "",
-        expense_fuel: 0,
-        travel_airplane: "",
-        expense_airplane: 0,
-        travel_owncar: "",
-        register_owncar: "",
-        expense_owncar: 0,
-        distance: 0,
-        residence: "",
-        residence_num: 0,
-        expense_residence: 0,
-        register_meeting: "",
-        expense_register_meeting: 0,
-        allowance: "",
-        expense_allowance: 0,
-        others: "",
-        others_detail: "",
-        expense_other: 0,
-        expense_total: 0,
-        cid_account: "",
-        cid_account_recoder: ""
-      },
-      partner_name: null,
-      partner_dep: null,
-      partner_travel: null,
-      person_partner: [
-        {
-          id: 1,
-          re_date: date_now,
-          fullname: "",
-          dep: "",
-          travel: null,
-          recoder: ""
-        }
-      ],
-      th: th,
-      show: true,
-      disabledDates: {},
-      disabledFn: {
-        customPredictor(date) {
-          if (date.getDate() < ToDay) {
-            return true;
-          }
-        }
-      },
-      highlightedFn: {
-        customPredictor(date) {
-          if (date.getDate() == ToDay) {
-            return true;
-          }
-        }
-      }
-    };
-  },
-  computed: {
-    noPartner() {
-      return this.person_partner.length === 1;
-    }
-  },
-  methods: {
-    decoded() {
-      let decoded = decode(this.userLogin);
-      return decoded;
+    name: "register-add",
+    components: {
+        Datepicker
     },
-    onSubmit(evt) {
-      if (this.travel_type == null) {
-        this.$swal("Warning !", "กรุณาเลือกการเดินทาง", "warning");
-      } else if (this.form.book_owner_date == "") {
-        this.$swal("Warning !", "กรุณาเลือกวันที่ลงหนังสือ", "warning");
-      } else if (this.form.start_date == "") {
-        this.$swal(
-          "Warning !",
-          "กรุณาเลือกวันที่เริ่มอบรม/ประชุม/สัมนา",
-          "warning"
-        );
-      } else if (this.form.end_date == "") {
-        this.$swal(
-          "Warning !",
-          "กรุณาเลือกวันที่สิ้นสุดอบรม/ประชุม/สัมนา",
-          "warning"
-        );
-      } else if (this.form.start_travel == "") {
-        this.$swal("Warning !", "กรุณาเลือกวันที่ออกเดินทาง", "warning");
-      } else if (this.form.end_travel == "") {
-        this.$swal("Warning !", "กรุณาเลือกวันที่เดินทางกลับ", "warning");
-      } else {
-        this.person_partner[0].fullname =
-          this.decoded().data[0].fname + " " + this.decoded().data[0].lname;
-        this.person_partner[0].dep = this.depart;
-        this.person_partner[0].travel = this.travel_type.travel_name;
-        this.person_partner[0].recoder = this.decoded().data[0].idcard;
-        this.form.cid_account = this.decoded().data[0].idcard;
-        this.form.cid_account_recoder = this.decoded().data[0].idcard;
-        this.form.start_date = this.formatdate(this.form.start_date);
-        this.form.end_date = this.formatdate(this.form.end_date);
-        this.form.start_travel = this.formatdate(this.form.start_travel);
-        this.form.end_travel = this.formatdate(this.form.end_travel);
-        this.form.book_owner_date = this.formatdate(this.form.book_owner_date);
-        //console.log(JSON.stringify(this.form));
-
-        axios
-          .post(this.HOST + "/hrd/create", {
-            register: this.form,
-            register_partner: this.person_partner
-          })
-          .then(res => {
-            let data = res.data;
-            //console.log(data);
-
-            if (data[0].status == 200) {
-              this.$swal({
-                position: "top-end",
-                type: "success",
-                title: "Your work has been saved.",
-                showConfirmButton: false,
-                timer: 1500
-              });
-              this.$router.push("/services/register-all");
-            } else {
-              this.$swal("เกิดข้อผิดพลาด !!!", data[0].msg, "error");
+    props: {
+        value: String
+    },
+    data() {
+        return {
+            userLogin: window.localStorage.getItem("user-login"),
+            full_name: "",
+            depart: "",
+            travel_type: null,
+            department: JSON.parse(window.localStorage.getItem("department")),
+            employee: JSON.parse(window.localStorage.getItem("rehuser")),
+            travel: MeetingTravel,
+            meetingType: MeetingType,
+            meetingIs: MeetingIs,
+            meetingPlan: [],
+            meetingStrategy: MeetingStrategy,
+            meetingBudget: MeetingBudget,
+            arrayYear: year_TH,
+            selected: null,
+            form: {
+                re_date: date_now,
+                phone: "",
+                meeting_type: "",
+                meeting_story: "",
+                start_date: "",
+                end_date: "",
+                meeting_place: "",
+                meeting_place_type: "",
+                meeting_host: "",
+                start_travel: "",
+                end_travel: "",
+                strategy: "",
+                meeting_is: "",
+                hrdplan_id: 0,
+                meeting_plan_id:"",
+                meeting_owner: "",
+                book_owner: "",
+                book_owner_date: "",
+                book_hos_id: "",
+                book_hos_year: year_TH,
+                budget_type: "",
+                budget_other: "",
+                travel_government_car: "",
+                travel_bus: "",
+                expense_bus: 0,
+                travel_fuel: "",
+                expense_fuel: 0,
+                travel_airplane: "",
+                expense_airplane: 0,
+                travel_owncar: "",
+                register_owncar: "",
+                expense_owncar: 0,
+                distance: 0,
+                residence: "",
+                residence_num: 0,
+                expense_residence: 0,
+                register_meeting: "",
+                expense_register_meeting: 0,
+                allowance: "",
+                expense_allowance: 0,
+                others: "",
+                others_detail: "",
+                expense_other: 0,
+                expense_total: 0,
+                cid_account: "",
+                cid_account_recoder: ""
+            },
+            partner_name: "",
+            partner_dep: "",
+            partner_travel: "",
+            parnert_preview: [
+                {
+                    fullname: "",
+                    department: "",
+                    travel_type: ""
+                }
+            ],
+            person_partner: [
+                {
+                    queue: 1,
+                    re_date: date_now,
+                    fullname: "",
+                    cid_account: "",
+                    cid_account_recoder: "",
+                    department: "",
+                    employee_type: "",
+                    travel_type: ""
+                }
+            ],
+            th: th,
+            show: true,
+            hidden: true,
+            hrdplan: "",
+            hrdplanOption: JSON.parse(window.localStorage.getItem("hrdplan")),
+            disabledDates: {},
+            disabledFn: {
+                customPredictor(date) {
+                    if (date.getDate() < ToDay) {
+                        return true;
+                    }
+                }
+            },
+            highlightedFn: {
+                customPredictor(date) {
+                    if (date.getDate() == ToDay) {
+                        return true;
+                    }
+                }
             }
-          })
-          .catch(error => console.log("Error :", error));
-      }
-      evt.preventDefault();
-      //   console.log(JSON.stringify(this.form));
-      //   console.log(JSON.stringify(this.form));
+        };
     },
-    getDate() {
-      let today = new Date();
-      let year = today.getFullYear() + 543;
-      let month = today.getMonth();
-      let day = today.getDate();
-      let thmonth = new Array(
-        "มกราคม",
-        "กุมภาพันธ์",
-        "มีนาคม",
-        "เมษายน",
-        "พฤษภาคม",
-        "มิถุนายน",
-        "กรกฎาคม",
-        "สิงหาคม",
-        "กันยายน",
-        "ตุลาคม",
-        "พฤศจิกายน",
-        "ธันวาคม"
-      );
-      let date_now = `${day} ${thmonth[month]} ${year}`;
-      return date_now;
+    computed: {
+        noPartner() {
+            return this.person_partner.length === 1;
+        }
     },
-    addPerson: function() {
-      if (
-        this.partner_name != null &&
-        this.partner_dep != null &&
-        this.partner_travel != null
-      ) {
-        var id_plus = this.person_partner.length + 1;
-        this.person_partner.push({
-          id: id_plus,
-          re_date: date_now,
-          fullname: this.partner_name.fullname,
-          dep: this.partner_dep.dep_code_name,
-          travel: this.partner_travel.travel_name,
-          recoder: this.decoded().data[0].idcard
-        });
-        //console.log(JSON.stringify(this.person_partner));
+    methods: {
+        decoded() {
+            let decoded = decode(this.userLogin);
+            return decoded;
+        },
+        meetingIsChange(evt) {
+            return evt === 3 ? this.hidden = false: this.hidden = true ;
+        },
+        onSubmit(evt) {
+            if (this.person_partner.travel == "") {
+                this.$swal("Warning !", "กรุณาเลือกการเดินทาง", "warning");
+            } else if (this.form.book_owner_date == "") {
+                this.$swal("Warning !", "กรุณาเลือกวันที่ลงหนังสือ", "warning");
+            } else if (this.form.start_date == "") {
+                this.$swal(
+                    "Warning !",
+                    "กรุณาเลือกวันที่เริ่มอบรม/ประชุม/สัมนา",
+                    "warning"
+                );
+            } else if (this.form.end_date == "") {
+                this.$swal(
+                    "Warning !",
+                    "กรุณาเลือกวันที่สิ้นสุดอบรม/ประชุม/สัมนา",
+                    "warning"
+                );
+            } else if (this.form.start_travel == "") {
+                this.$swal(
+                    "Warning !",
+                    "กรุณาเลือกวันที่ออกเดินทาง",
+                    "warning"
+                );
+            } else if (this.form.end_travel == "") {
+                this.$swal(
+                    "Warning !",
+                    "กรุณาเลือกวันที่เดินทางกลับ",
+                    "warning"
+                );
+            } else {
+                this.form.hrdplan_id = (this.form.hrdplan_id.id !== undefined)? this.form.hrdplan_id.id: 0
+                
+                //Preview person partner
+                // this.parnert_preview[0].department = this.person_partner[0].department;
+                // this.parnert_preview[0].travel_type = this.person_partner[0].travel_type;
+                this.person_partner[0].fullname = this.decoded().data[0].fullname;
+                this.person_partner[0].cid_account = this.decoded().data[0].idcard;
+                this.person_partner[0].cid_account_recoder = this.decoded().data[0].idcard;
+                this.person_partner[0].department = this.decoded().data[0].dep_name;
+                this.person_partner[0].employee_type = this.decoded().data[0].type_name;
 
-        this.partner_name = null;
-        this.partner_dep = null;
-        this.partner_travel = null;
-      } else {
-        console.log("No select data!!!");
-      }
+                this.form.cid_account = this.decoded().data[0].idcard;
+                this.form.cid_account_recoder = this.decoded().data[0].idcard;
+
+                this.form.start_date = this.formatdate(this.form.start_date);
+                this.form.end_date = this.formatdate(this.form.end_date);
+                this.form.start_travel = this.formatdate(
+                    this.form.start_travel
+                );
+                this.form.end_travel = this.formatdate(this.form.end_travel);
+                this.form.book_owner_date = this.formatdate(
+                    this.form.book_owner_date
+                );
+
+                // console.log(JSON.stringify(this.form));
+                console.log(JSON.stringify(this.person_partner));
+                // console.log(JSON.stringify(this.decoded().data[0]));
+
+                axios
+                    .post(this.HOST + "/hrd/create", {
+                            register: this.form,
+                        register_partner: this.person_partner
+                    })
+                    .then(res => {
+                            let data = res.data;
+                        //console.log(data);
+                        if (data[0].status == 200) {
+                                this.$swal({
+                                        position: "top-end",
+                                type: "success",
+                                title: "บันทึกข้อมูลขออนุมัติไปราชการเรียบร้อยแล้ว",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            this.$router.push("/services/register-all");
+                        } else {
+                            this.$swal(
+                                "เกิดข้อผิดพลาด !!!",
+                                data[0].msg,
+                                "error"
+                            );
+                        }
+                    })
+                    .catch(error => console.log("Error :", error));
+            }
+            evt.preventDefault();
+            //   console.log(JSON.stringify(this.form));
+            //   console.log(JSON.stringify(this.form));
+        },
+        getDate() {
+            let today = new Date();
+            let year = today.getFullYear() + 543;
+            let month = today.getMonth();
+            let day = today.getDate();
+            let thmonth = new Array(
+                "มกราคม",
+                "กุมภาพันธ์",
+                "มีนาคม",
+                "เมษายน",
+                "พฤษภาคม",
+                "มิถุนายน",
+                "กรกฎาคม",
+                "สิงหาคม",
+                "กันยายน",
+                "ตุลาคม",
+                "พฤศจิกายน",
+                "ธันวาคม"
+            );
+            let date_now = `${day} ${thmonth[month]} ${year}`;
+            return date_now;
+        },
+        addPerson: function() {
+            if (
+                this.partner_name != null &&
+                this.partner_dep != null &&
+                this.partner_travel != null
+            ) {
+
+                // console.log(this.partner_name);
+                // console.log(this.partner_dep); 
+                // console.log(this.partner_travel); 
+                let id_plus = this.person_partner.length + 1;
+                this.person_partner.push({
+                    queue: id_plus,
+                    re_date: date_now,
+                    fullname: this.partner_name.fullname,
+                    cid_account: this.partner_name.idcard,
+                    cid_account_recoder: this.decoded().data[0].idcard,
+                    department: this.partner_dep.dep_code_name,
+                    employee_type: this.partner_name.type_name,
+                    travel_type: this.partner_travel.travel_id
+                });
+
+                this.parnert_preview.push({
+                    fullname: this.partner_name.fullname,
+                    department: this.partner_dep.dep_code_name,
+                    travel_type: this.partner_travel.travel_name
+                })
+                // console.log(JSON.stringify(this.partner_name));
+                // console.log(JSON.stringify(this.person_partner));
+                // console.log(JSON.stringify(this.parnert_preview));
+
+                this.partner_name = null;
+                this.partner_dep = null;
+                this.partner_travel = null;
+            } else {
+                console.log("No select data!!!");
+            }
+        },
+        deletePerson(index) {
+            this.person_partner.splice(index, 1);
+            this.parnert_preview.splice(index, 1);
+            // console.log(JSON.stringify(this.person_partner));
+            // console.log(JSON.stringify(this.parnert_preview));
+        },
+        formatdate(dateTime) {
+            let dateNew = this.moment(dateTime).format("YYYY-MM-DD");
+            return `${dateNew}`;
+        },
+        getHRDPlan() {
+            axios
+                .post(this.HOST + "/hrd/hrdplan", {
+                    year: 2563,
+                    dep: this.decoded().data[0].dep_name
+                })
+                .then(res => {
+                    window.localStorage.setItem("hrdplan", JSON.stringify(res.data.data));
+                })
+                .catch(error => console.log("Error", error));
+        },
+        getMeetingPlan() {
+            axios
+                .get(this.HOST + "/hrd/getMeetingPlan")
+                .then(res => {
+                    this.meetingPlan = res.data.data;
+                })
+                .catch(error => console.log("Error", error));
+        }
     },
-    deletePerson(index) {
-      this.person_partner.splice(index, 1);
-    },
-    formatdate(dateTime) {
-      let dateNew = this.moment(dateTime).format("YYYY-MM-DD");
-      return `${dateNew}`;
+    mounted() {
+        // console.log(this.employee);
+        // console.log(this.employee);
+        this.full_name = this.decoded().data[0].fullname;
+        this.depart = this.decoded().data[0].dep_name;
+        this.getHRDPlan();
+        this.getMeetingPlan();
+
     }
-  },
-  mounted() {
-    this.full_name = this.decoded().data[0].fullname;
-    this.depart = this.decoded().data[0].dep_name;
-  }
 };
 </script>
 
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+    transition: opacity 0.5s;
 }
 .fade-enter,
 .fade-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
 input[type="number"] {
-  text-align: center;
+    text-align: center;
 }
 </style>

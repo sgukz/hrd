@@ -6,12 +6,12 @@
       </ul>
     </template>
     <template slot="dropdown">
-      <b-dropdown-header
+      <!-- <b-dropdown-header
         tag="div"
         class="text-center">
         <strong>Settings</strong>
-      </b-dropdown-header>
-      <b-dropdown-item to="/profile/Profiles"><i class="fa fa-user" /> Profile</b-dropdown-item>
+      </b-dropdown-header> -->
+      <!-- <b-dropdown-item to="/profile/Profiles"><i class="fa fa-user" /> Profile</b-dropdown-item> -->
       <b-dropdown-item v-on:click="logout"><i class="fa fa-lock" /> Logout</b-dropdown-item>
     </template>
   </AppHeaderDropdown>
