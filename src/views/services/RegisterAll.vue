@@ -181,6 +181,11 @@ export default {
                     sortable: true
                 },
                 {
+                    key: "full_name",
+                    label: "ชื่อ-สกุล",
+                    sortable: true
+                },
+                {
                     key: "meeting_story",
                     label: "เรื่อง",
                     sortable: true

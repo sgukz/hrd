@@ -18,6 +18,10 @@ const MeetingType = [
     {
         "meeting_type_code": "05",
         "meeting_type_name": "เดินทางไปราชการ"
+    },
+    {
+        "meeting_type_code": "06",
+        "meeting_type_name": "ประชุมออนไลน์"
     }
 ]
 export default MeetingType

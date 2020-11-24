@@ -1274,7 +1274,7 @@ export default {
                 );
 
                 // console.log(JSON.stringify(this.form));
-                console.log(JSON.stringify(this.person_partner));
+                // console.log(JSON.stringify(this.person_partner));
                 // console.log(JSON.stringify(this.decoded().data[0]));
 
                 axios
@@ -1305,8 +1305,6 @@ export default {
                     .catch(error => console.log("Error :", error));
             }
             evt.preventDefault();
-            //   console.log(JSON.stringify(this.form));
-            //   console.log(JSON.stringify(this.form));
         },
         getDate() {
             let today = new Date();
@@ -1335,11 +1333,7 @@ export default {
                 this.partner_name != null &&
                 this.partner_dep != null &&
                 this.partner_travel != null
-            ) {
-
-                // console.log(this.partner_name);
-                // console.log(this.partner_dep); 
-                // console.log(this.partner_travel); 
+            ) { 
                 let id_plus = this.person_partner.length + 1;
                 this.person_partner.push({
                     queue: id_plus,
@@ -1357,22 +1351,14 @@ export default {
                     department: this.partner_dep.dep_code_name,
                     travel_type: this.partner_travel.travel_name
                 })
-                // console.log(JSON.stringify(this.partner_name));
-                // console.log(JSON.stringify(this.person_partner));
-                // console.log(JSON.stringify(this.parnert_preview));
-
                 this.partner_name = null;
                 this.partner_dep = null;
                 this.partner_travel = null;
-            } else {
-                console.log("No select data!!!");
             }
         },
         deletePerson(index) {
             this.person_partner.splice(index, 1);
             this.parnert_preview.splice(index, 1);
-            // console.log(JSON.stringify(this.person_partner));
-            // console.log(JSON.stringify(this.parnert_preview));
         },
         formatdate(dateTime) {
             let dateNew = this.moment(dateTime).format("YYYY-MM-DD");
@@ -1381,7 +1367,7 @@ export default {
         getHRDPlan() {
             axios
                 .post(this.HOST + "/hrd/hrdplan", {
-                    year: 2563,
+                    year: this.fiscalYear(),
                     dep: this.decoded().data[0].dep_name
                 })
                 .then(res => {
@@ -1396,16 +1382,25 @@ export default {
                     this.meetingPlan = res.data.data;
                 })
                 .catch(error => console.log("Error", error));
+        },
+        fiscalYear(){
+            const chkDate = new Date(year, month-1, day).getTime()
+            const startYear = new Date(year, 10, 1).getTime()
+            const endYear = new Date(year+1, 9, 30).getTime()
+            let FiscalYear = year
+            if(chkDate >= startYear && chkDate < endYear){
+                FiscalYear += (543) + 1
+            }else{
+                FiscalYear += (543)
+            }
+            return FiscalYear;
         }
     },
     mounted() {
-        // console.log(this.employee);
-        // console.log(this.employee);
         this.full_name = this.decoded().data[0].fullname;
         this.depart = this.decoded().data[0].dep_name;
         this.getHRDPlan();
         this.getMeetingPlan();
-
     }
 };
 </script>

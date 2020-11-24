@@ -134,12 +134,10 @@
                             label-for="position_name"
                             label-cols="3"
                         >
-                            <v-select
-                              v-model="formAdd.position_name"
-                              placeholder="เลือกตำแหน่ง"
-                              label="position_name"
-                              :options="itemPosition"
-                          ></v-select>
+                            <b-form-input
+                                type="text"
+                                v-model="formAdd.position_name"
+                            ></b-form-input>
                         </b-form-group>
                       </b-col>
                       <b-col sm="12">
@@ -244,6 +242,7 @@ export default {
   methods: {
     loadData() {
       this.getUserManage();
+      // this.getPositions();
     },
     onSearch(evt) {
       let keywords = this.form.keyword;
@@ -265,9 +264,6 @@ export default {
         url = this.HOST + "/hrd/positions/update";
       }
       if(this.formAdd.position_name !== null){
-        if(this.formAdd.position_name.position_name !== undefined){
-          this.formAdd.position_name = this.formAdd.position_name.position_name;
-        }
         if(this.formAdd.degree === null){
           this.formAdd.degree = "";
         }else if(this.formAdd.degree.degree_name !== undefined){
@@ -357,15 +353,16 @@ export default {
         })
         .catch(error => console.log("Error", error));
     },
-    getPositions() {
-      axios
-        .get(this.HOST + "/hrd/positions")
-        .then(res => {
-          let parsed = JSON.stringify(res.data);
-          window.localStorage.setItem("positions", parsed);
-        })
-        .catch(error => console.log("Error", error));
-    },
+    // getPositions() {
+    //   axios
+    //     .get(this.HOST + "/hrd/positions")
+    //     .then(res => {
+    //       let parsed = JSON.stringify(res.data);
+    //       window.localStorage.setItem("positions", parsed);
+    //       this.itemPosition = JSON.parse(window.localStorage.getItem("positions"));
+    //     })
+    //     .catch(error => console.log("Error", error));
+    // },
     onClickChange(data){
       this.showFormEdit = true;
       this.formAdd.cid = data.cid
@@ -380,11 +377,10 @@ export default {
   mounted() {
     this.loadData();
     // console.log(this.itemDegree);
-    if(window.localStorage.getItem("positions") === null){
-      this.getPositions();
-    }else{
-      this.itemPosition = JSON.parse(window.localStorage.getItem("positions"));
-    }
+    // if(window.localStorage.getItem("positions") === null){
+    // }else{
+      
+    // }
   }
 };
 </script>

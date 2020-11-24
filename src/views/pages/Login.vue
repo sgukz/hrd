@@ -93,7 +93,6 @@ export default {
       } else {
         if (this.form.idcard.split("_").join("").length === 13) {
           let url = this.HOST;
-          //console.log(JSON.stringify(this.form));
           axios
             .post(url + "/login", {
               auth: this.form
@@ -107,24 +106,14 @@ export default {
                   window.localStorage.setItem("user-login", resp);
                   window.localStorage.setItem("date-login", date_now);
                   this.getDepartment();
-                  this.getEmployee();
+                  this.getEmployee(this.form.idcard);
                   setTimeout(() => {
                     this.$router.push("/services/register-all");
                   }, 1000);
                 } else {
-                //   this.$swal(
-                //     "เข้าสู่ระบบไม่สำเร็จ",
-                //     "Username or Password Invalid.",
-                //     "error"
-                //   );
                   this.isInvalid = true;
                 }
               } else {
-                // this.$swal(
-                //   "เข้าสู่ระบบไม่สำเร็จ",
-                //   "Username or Password Invalid.",
-                //   "error"
-                // );
                 this.isInvalid = true;
               }
             })
@@ -163,9 +152,9 @@ export default {
         })
         .catch(error => console.log("Error", error));
     },
-    getEmployee() {
+    getEmployee(cid) {
       axios
-        .get(this.HOST + "/hrd/rehuser")
+        .get(this.HOST + "/hrd/rehuser/"+cid)
         .then(res => {
           let parsed = JSON.stringify(res.data);
           window.localStorage.setItem("rehuser", parsed);

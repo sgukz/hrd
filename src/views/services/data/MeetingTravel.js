@@ -14,6 +14,10 @@ const MeetingTravel = [
     {
         "travel_id": 4,
         "travel_name": "เครื่องบิน"
+    },
+    {
+        "travel_id": 5,
+        "travel_name": "อื่นๆ"
     }
 ]
 export default MeetingTravel

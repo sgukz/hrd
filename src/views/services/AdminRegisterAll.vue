@@ -4,7 +4,7 @@
       <b-col sm="12">
         <b-card>
           <div slot="header">
-            <strong>ข้อมูลขออนุมัตืไปราชการ</strong>
+            <strong>ข้อมูลขออนุมัติไปราชการ</strong>
           </div>
           <b-row>
             <b-col sm="12">
@@ -164,6 +164,11 @@ export default {
           label: "ประเภท",
           sortable: true
         },
+        {
+                    key: "full_name",
+                    label: "ชื่อ-สกุล",
+                    sortable: true
+                },
         {
           key: "meeting_story",
           label: "เรื่อง",
